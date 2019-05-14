@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 import 'shifts.dart';
 import 'profile.dart';
+import 'login.dart';
+import 'social.dart';
 
 void main() => { runApp(App()) };
 
@@ -11,6 +13,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'AMC'),
       home: Main(),
     );
   }
@@ -19,14 +22,7 @@ class App extends StatelessWidget {
 class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-          child: Header(),
-          preferredSize: Size(0,50),),
-      body: Body(),
-      endDrawer: SideDrawer(),
-      bottomNavigationBar: Footer(),
-    );
+    return LoginPage();
   }
 }
 
@@ -35,12 +31,12 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Image.asset(
-                'assets/images/amc_logo.png',
+                'assets/amc_logo.png',
                 width: 40.0,
                 height: 40.0,
               ),
@@ -61,7 +57,11 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: Center(child: Text('Home'),),
+      child: Center(
+        child: Text(
+          'Home',
+        ),
+      ),
     );
   }
 }
@@ -80,7 +80,7 @@ class Footer extends StatelessWidget {
               onPressed: () {
                 Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => Home())
+                    MaterialPageRoute(builder: (context) => HomePage())
                 );
               },
               color: Colors.white,
@@ -93,7 +93,20 @@ class Footer extends StatelessWidget {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => Shifts())
+                  MaterialPageRoute(builder: (context) => ShiftsPage())
+                );
+              },
+              color: Colors.white,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: IconButton(
+              icon: Icon(Icons.mood),
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => SocialPage())
                 );
               },
               color: Colors.white,
@@ -106,7 +119,7 @@ class Footer extends StatelessWidget {
               onPressed: () {
                 Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => Profile())
+                    MaterialPageRoute(builder: (context) => ProfilePage())
                 );
               },
               color: Colors.white,
@@ -117,86 +130,5 @@ class Footer extends StatelessWidget {
       color: Colors.black87,
 
       );
-  }
-}
-
-class SideDrawer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 300.0,
-      color: Colors.red,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ListTile(
-              leading: Icon(
-                Icons.cloud_done,
-                color: Colors.white,
-              ),
-              title: Text(
-                'Drawer is cool',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              trailing: Icon(
-                Icons.expand_more,
-                color: Colors.white,
-              ),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.image,
-                color: Colors.white,
-              ),
-              title: Text(
-                'Flutter is awesome',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              trailing: Icon(
-                Icons.expand_more,
-                color: Colors.white,
-              ),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.graphic_eq,
-                color: Colors.white,
-              ),
-              title: Text(
-                'Drawer initialization',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              trailing: Icon(
-                Icons.expand_more,
-                color: Colors.white,
-              ),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.child_care,
-                color: Colors.white,
-              ),
-              title: Text(
-                'See you soon!',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              trailing: Icon(
-                Icons.expand_more,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
