@@ -21,7 +21,7 @@ class SettingsPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Employee'),
+              child: Text('Settings'),
             ),
           ],
         ),
@@ -37,10 +37,7 @@ class SettingsPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.popUntil(
-            context,
-            ModalRoute.withName(Navigator.defaultRouteName)
-          );
+          Navigator.of(context).popUntil((route) => route.isFirst);
         },
         child: Icon(
           Icons.arrow_back,

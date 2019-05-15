@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "805833542574",
+    "firebase_url": "https://amc-app-6af78.firebaseio.com",
+    "project_id": "amc-app-6af78",
+    "storage_bucket": "amc-app-6af78.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805833542574:android:8ceeb2483bf619ff",
+        "android_client_info": {
+          "package_name": "com.example.amc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805833542574-me7j5fk4q43o1m1sgrrsanisso0gsqtq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA39sdvd9rzkF2r7i9bbubwjSnMezYOc5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805833542574-me7j5fk4q43o1m1sgrrsanisso0gsqtq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

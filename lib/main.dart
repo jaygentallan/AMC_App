@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'home.dart';
 import 'shifts.dart';
 import 'profile.dart';
 import 'login.dart';
+import 'signup.dart';
 import 'social.dart';
 import 'chat.dart';
 import 'notifications.dart';
@@ -19,6 +22,11 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'AMC'),
       home: Main(),
+      routes: <String, WidgetBuilder> {
+        '/landingpage': (BuildContext context) => App(),
+        '/signup': (BuildContext context) => SignupPage(),
+        '/homepage': (BuildContext context) => Header(),
+      }
     );
   }
 }
@@ -26,7 +34,7 @@ class App extends StatelessWidget {
 class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Header();
+    return LoginPage();
   }
 }
 
@@ -50,6 +58,7 @@ class Header extends StatelessWidget {
       length: _tabs.length,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -67,7 +76,6 @@ class Header extends StatelessWidget {
               ),
             ],
           ),
-          automaticallyImplyLeading: false,
           backgroundColor: Colors.black87,
         ),
         endDrawer: SideDrawer(),
@@ -78,7 +86,7 @@ class Header extends StatelessWidget {
           tabs: _tabs,
           labelColor: Colors.black87,
           unselectedLabelColor: Colors.black26,
-          indicatorColor: Colors.redAccent,
+          indicatorColor: const Color.fromRGBO(206, 38, 64, 1.0),
         ),
       ),
     );
@@ -91,7 +99,7 @@ class SideDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 180.0,
-      color: Colors.black87,
+      color: Colors.black45,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -167,6 +175,25 @@ class SideDrawer extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => SettingsPage())
                 );
               }
+            ),
+            ListTile(
+                leading: Icon(
+                  Icons.exit_to_app,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'Logout',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  FirebaseAuth.instance.signOut()
+                    .then((value) {
+                      Navigator.of(context).pushReplacementNamed('/landingpage'); })
+                    .catchError((e) {
+                      print(e);});
+                }
             ),
           ],
         ),
