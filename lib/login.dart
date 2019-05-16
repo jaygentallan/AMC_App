@@ -243,7 +243,7 @@ class SignupButton extends StatelessWidget {
       children: <Widget>[
         FlatButton(
           child: Text(
-            "Don't have an account? Sign Up here",
+            "Don't have an account? Sign up here",
             style: TextStyle(
               color: Colors.white,
               fontSize: 12.0,

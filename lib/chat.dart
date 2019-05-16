@@ -42,7 +42,7 @@ class ChatPage extends StatelessWidget {
         child: Icon(
           Icons.arrow_back,
         ),
-        backgroundColor: Colors.black87,
+        backgroundColor: const Color.fromRGBO(206, 38, 64, 1.0),
       ),
     );
   }
