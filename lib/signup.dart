@@ -24,7 +24,7 @@ class _SignupPageState extends State<SignupPage> {
         body: Stack(
           children: <Widget>[
             Background(),
-            Center(
+            Positioned.fill(
               child: ListView(
                 padding: EdgeInsets.symmetric(horizontal: 24.0),
                 children: <Widget>[
