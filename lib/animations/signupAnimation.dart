@@ -45,9 +45,8 @@ class StartAnimation extends StatefulWidget {
   Widget _buildAnimation(BuildContext context, Widget child) {
     return Stack(
       children: <Widget>[
-        zoomAnimation.value <= 200 ?
         Padding(
-          padding: const EdgeInsets.only(bottom: 50.0),
+          padding: const EdgeInsets.only(bottom: 60.0),
           child: Container(
             width: shrinkButtonAnimation.value,
             height: 50.0,
@@ -64,9 +63,9 @@ class StartAnimation extends StatefulWidget {
             ),
             child: FlatButton(
               onPressed: () {},
-                child: shrinkButtonAnimation.value > 77 ? // Conditional statement to change to loading indicator
+                child: shrinkButtonAnimation.value > 85 ? // Conditional statement to change to loading indicator
                 Text(
-                  "Log In",
+                  "Sign Up",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15.0,
@@ -84,18 +83,7 @@ class StartAnimation extends StatefulWidget {
                 ),
             ),
           )
-        )
-          : Container(
-            width: zoomAnimation.value,
-            height: zoomAnimation.value,
-
-            decoration: BoxDecoration(
-              shape: zoomAnimation.value < 400 ?
-                BoxShape.circle :
-                BoxShape.rectangle,
-              color: const Color.fromRGBO(206, 38, 64, 1.0),
-            ),
-          )
+        ),
       ],
     );
   }

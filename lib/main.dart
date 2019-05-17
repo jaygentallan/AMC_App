@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'dart:ui';
 import 'dart:async';
@@ -16,6 +17,8 @@ import 'notifications.dart';
 import 'stats.dart';
 import 'settings.dart';
 
+import 'services/crud.dart';
+
 void main() => { runApp(App()) };
 
 class App extends StatelessWidget {
@@ -26,7 +29,7 @@ class App extends StatelessWidget {
       theme: ThemeData(fontFamily: 'AMC'),
       home: Main(),
       routes: <String, WidgetBuilder> {
-        '/landingpage': (BuildContext context) => App(),
+        '/login': (BuildContext context) => App(),
         '/signup': (BuildContext context) => SignupPage(),
         '/homepage': (BuildContext context) => Header(),
       }
@@ -50,6 +53,11 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
 
   AnimationController animationControllerScreen;
   Animation animationScreen;
+
+  QuerySnapshot profileData;
+  crudMethods crud = crudMethods();
+
+  String _name = '';
 
   @override
   void initState() {
@@ -92,6 +100,25 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
       child: Stack(
         children: <Widget> [
 
+          FutureBuilder(
+            future: FirebaseAuth.instance.currentUser(),
+              builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+                if (snapshot.hasData) {
+                  crud.getProfileData(snapshot.data).then((results) {
+                    setState(() {
+                      profileData = results;
+                      _name = profileData.documents[0].data['firstName'] != null
+                          ? profileData.documents[0].data['firstName'].replaceAll("\'", "")
+                          : '';
+                    });
+                  });
+                }
+                else {
+                  return null;
+            }
+          },
+        ),
+
         Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -112,7 +139,7 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
                 ),
               ],
             ),
-            backgroundColor: Colors.black87,
+          backgroundColor: Colors.black87,
           ),
           endDrawer: SideDrawer(),
           body: TabBarView(
@@ -120,8 +147,9 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
           ),
           bottomNavigationBar: TabBar(
             tabs: _tabs,
-            labelColor: Colors.black87,
-            unselectedLabelColor: Colors.black26,
+
+            labelColor: Colors.black87.withOpacity(1.0),
+            unselectedLabelColor: Colors.black87.withOpacity(0.3),
             indicatorColor: const Color.fromRGBO(206, 38, 64, 1.0),
           ),
         ),
@@ -129,7 +157,7 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
         SingleChildScrollView(
             child: Stack(
               children: <Widget>[
-                HomeAnimation(animation: animationScreen),
+                HomeAnimation(animation: animationScreen, name :_name),
               ],
             )
         ),
@@ -145,7 +173,7 @@ class SideDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 180.0,
-      color: Colors.black45,
+      color: const Color.fromRGBO(206, 38, 64, 1.0).withOpacity(0.8),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -236,7 +264,7 @@ class SideDrawer extends StatelessWidget {
                 onTap: () {
                   FirebaseAuth.instance.signOut()
                     .then((value) {
-                      Navigator.of(context).pushReplacementNamed('/landingpage'); })
+                      Navigator.of(context).pushReplacementNamed('/login'); })
                     .catchError((e) {
                       print(e);});
                 }
@@ -249,7 +277,9 @@ class SideDrawer extends StatelessWidget {
 }
 
 class HomeAnimation extends AnimatedWidget {
-  HomeAnimation({Key key, Animation<double> animation})
+  final String name;
+
+  HomeAnimation({Key key, Animation<double> animation, this.name})
       :super(key :key, listenable :animation);
 
   Widget build(BuildContext context) {
@@ -261,12 +291,20 @@ class HomeAnimation extends AnimatedWidget {
     ? Container(
       width: _width,
       height: _height,
-      color: const Color.fromRGBO(206, 38, 64, 1.0).withOpacity(animation.value),
+      color:
+        animation.value > 0.4
+        ? const Color.fromRGBO(206, 38, 64, 1.0)
+        : const Color.fromRGBO(206, 38, 64, 1.0).withOpacity(animation.value * 2.5),
       child: Material(
         type: MaterialType.transparency,
         child: Center(
-          child: Text('Hello, Jay',
-            style: TextStyle(fontSize: 30,color: Colors.white.withOpacity(animation.value)
+          child: Text("Hello, ${name}!",
+            style: TextStyle(fontSize: 25,color:
+                animation.value > 0.8
+                ? Colors.white.withOpacity(0.0)
+                : animation.value > 0.4
+                  ? Colors.white
+                  : Colors.white.withOpacity(animation.value * 2.5),
             ),
           ),
         ),

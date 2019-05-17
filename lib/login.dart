@@ -80,25 +80,50 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       Column(
                         children: <Widget>[
 
-                          SizedBox(height: 50.0), // Used to add padding
+                          SizedBox(height: 80.0), // Used to add padding
 
-                          Image.asset( // AMC Logo
-                            'assets/amc_logo.png',
-                            width: 200.0,
-                            height: 200.0,
-                          ),
-
-                          SizedBox(height: 25.0), // Used to add padding
-
-                          Text( // Employee Login Text
-                            'Employee Login',
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(360),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color.fromRGBO(132, 26, 42, 1.0),
+                                  offset: Offset(0.0,7.5),
+                                ),
+                              ],
                             ),
-                          ),
+                            child: Stack(
+                              children: <Widget>[
 
-                          SizedBox(height: 25.0), // Used to add padding
+                                Container(
+                                  child: Image.asset( // AMC Logo
+                                    'assets/amc_logo.png',
+                                    width: 225.0,
+                                    height: 225.0,
+                                  ),
+                                ),
+
+                                Container(
+                                  width: 225,
+                                  height: 225,
+                                  child: Align (
+                                    alignment: Alignment(0.0,0.55),
+                                    child: Text(
+                                      "amazing",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22.5,
+                                        fontFamily: 'AMC2',
+                                        letterSpacing: 0.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                ],
+                              ),
+                            ),
+
+                          SizedBox(height: 50.0),
 
                           TextField( // Email text box
                             decoration: InputDecoration(
@@ -161,17 +186,17 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             ),
             ),
 
-          Container(
-            width: _width,
-            height: _height,
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: <Widget>[
-                SignupButton(),
+            Container(
+              width: _width,
+              height: _height,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: <Widget>[
+                  SignupButton(),
 
-                statusClick == 0 // Condition statement if button is clicked
+                  statusClick == 0 // Condition statement if button is clicked
                     ? Padding(
-                      padding: const EdgeInsets.only(bottom: 60.0),
+                      padding: const EdgeInsets.only(bottom: 50.0),
                       child: InkWell(
                         onTap: () async {
                           setState(() {
@@ -188,6 +213,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                             Navigator.of(context).pushReplacementNamed('/homepage');
                           }) // If authorized, sends to homepage
                               .catchError((e) {
+                            Navigator.of(context).pushReplacementNamed('/login');
                             print(e);
                           }
                           );
@@ -198,10 +224,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     : StartAnimation(
                         buttonController: animationControllerButton.view,),
 
-                SizedBox(height: 10.0),
-              ],
+                  SizedBox(height: 10.0),
+                ],
+              ),
             ),
-          ),
           ],
         ),
       );
@@ -218,6 +244,12 @@ class LoginButton extends StatelessWidget {
           height: 50.0,
           alignment: FractionalOffset.center,
           decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromRGBO(132, 26, 42, 1.0),
+                offset: Offset(0.0,6.0),
+              ),
+            ],
             color: const Color.fromRGBO(206, 38, 64, 1.0),
             borderRadius: BorderRadius.all(const Radius.circular(30.0)),
           ),
