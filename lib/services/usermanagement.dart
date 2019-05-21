@@ -9,6 +9,7 @@ class UserManagement {
         'firstName': data[0],
         'lastName': data[1],
         'employeeID': data[2],
+        'profilePic': null,
         'email': user.email,
         'uid': user.uid,
       })

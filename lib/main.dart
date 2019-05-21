@@ -6,18 +6,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:ui';
 import 'dart:async';
 
-import 'home.dart';
-import 'shifts.dart';
-import 'profile.dart';
-import 'login.dart';
-import 'signup.dart';
-import 'social.dart';
-import 'chat.dart';
-import 'notifications.dart';
-import 'stats.dart';
-import 'settings.dart';
+import 'package:amc/home/home.dart';
+import 'package:amc/shifts/shifts.dart';
+import 'package:amc/profile/profile.dart';
+import 'package:amc/login/login.dart';
+import 'package:amc/login/signup.dart';
+import 'package:amc/social/social.dart';
+import 'package:amc/drawer/chat.dart';
+import 'package:amc/drawer/notifications.dart';
+import 'package:amc/drawer/stats.dart';
+import 'package:amc/drawer/settings.dart';
 
 import 'services/crud.dart';
+
+import 'singletons/userdata.dart';
 
 void main() => { runApp(App()) };
 
@@ -26,7 +28,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'AMC'),
+      theme: ThemeData(fontFamily: 'Roboto'),
       home: Main(),
       routes: <String, WidgetBuilder> {
         '/login': (BuildContext context) => App(),
@@ -50,18 +52,20 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> with TickerProviderStateMixin {
-
   AnimationController animationControllerScreen;
   Animation animationScreen;
 
   QuerySnapshot profileData;
-  crudMethods crud = crudMethods();
+  CrudMethods crud = CrudMethods();
 
-  String _name = '';
+  bool init = true;
+  int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
+
+    init = true;
 
     animationControllerScreen = AnimationController(
       duration: Duration(seconds: 3),
@@ -75,95 +79,176 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
     animationControllerScreen.forward();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
-  final _tabPages = <Widget>[
+  final _children = <Widget>[
     HomePage(),
     ShiftsPage(),
     SocialPage(),
     ProfilePage(),
   ];
-  final _tabs = <Tab>[
-    Tab(icon: Icon(Icons.home), text: 'Home'),
-    Tab(icon: Icon(Icons.schedule), text: 'Shifts'),
-    Tab(icon: Icon(Icons.mood), text: 'Social'),
-    Tab(icon: Icon(Icons.person), text: 'Profile'),
+
+  final _pages = <BottomNavigationBarItem>[
+    BottomNavigationBarItem(
+        icon: Icon(Icons.home),
+        title: Text(
+          'HOME',
+          style: TextStyle(fontWeight: FontWeight.w400),)),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.schedule),
+      title: Text(
+        'SHIFTS',
+        style: TextStyle(fontWeight: FontWeight.w400))),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.people),
+      title: Text(
+        'SOCIAL',
+        style: TextStyle(fontWeight: FontWeight.w400))),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      title: Text(
+        'PROFILE',
+        style: TextStyle(fontWeight: FontWeight.w400))),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _tabs.length,
-      child: Stack(
-        children: <Widget> [
-
-          FutureBuilder(
-            future: FirebaseAuth.instance.currentUser(),
-              builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
-                if (snapshot.hasData) {
-                  crud.getProfileData(snapshot.data).then((results) {
-                    setState(() {
-                      profileData = results;
-                      _name = profileData.documents[0].data['firstName'] != null
-                          ? profileData.documents[0].data['firstName'].replaceAll("\'", "")
-                          : '';
-                    });
+    final GlobalKey<FormState> _loginFormKey =
+    new GlobalKey<FormState>(debugLabel: '_loginFormKey');
+    return Stack(
+      children: <Widget>[
+        init == true
+            ? FutureBuilder(
+          future: FirebaseAuth.instance.currentUser(),
+          builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data != null) {
+                crud.getProfileData(snapshot.data).then((results) {
+                  setState(() {
+                    profileData = results;
+                    userData.firstName =
+                    profileData.documents[0].data['firstName'] != null
+                        ? profileData.documents[0].data['firstName']
+                        .replaceAll("\'", "")
+                        : '';
+                    userData.lastName =
+                    profileData.documents[0].data['lastName'] != null
+                        ? profileData.documents[0].data['lastName']
+                        .replaceAll("\'", "")
+                        : '';
+                    init = false;
                   });
-                }
-                else {
-                  return null;
+                });
+              } else {
+                return Container(width: 0.0, height: 0.0);
+              }
+            } else {
+              return Container(width: 0.0, height: 0.0);
             }
           },
-        ),
+        )
+            : Container(width: 0.0, height: 0.0),
 
         Scaffold(
+          key: _loginFormKey,
           appBar: AppBar(
             automaticallyImplyLeading: false,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: Image.asset(
                     'assets/amc_logo.png',
-                    width: 40.0,
-                    height: 40.0,
+                    width: 30.0,
+                    height: 30.0,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('Employee'),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child:
+                  _currentIndex == 0
+                    ? Text(
+                      'Home',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 17))
+                    : _currentIndex == 1
+                      ? Text(
+                        'Shifts',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 17))
+                      : _currentIndex == 2
+                        ? Text(
+                          'Social',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 17))
+                        : _currentIndex == 3
+                          ? Text(
+                            'Profile',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 17))
+                          : Container(width: 0.0,height: 0.0)
                 ),
               ],
             ),
-          backgroundColor: Colors.black87,
+            backgroundColor: Colors.black,
           ),
           endDrawer: SideDrawer(),
-          body: TabBarView(
-            children: _tabPages,
-          ),
-          bottomNavigationBar: TabBar(
-            tabs: _tabs,
-
-            labelColor: Colors.black87.withOpacity(1.0),
-            unselectedLabelColor: Colors.black87.withOpacity(0.3),
-            indicatorColor: const Color.fromRGBO(206, 38, 64, 1.0),
+          body: _children[_currentIndex],
+          bottomNavigationBar: Theme(
+            data: Theme.of(context).copyWith(
+              // sets the background color of the `BottomNavigationBar`
+                canvasColor: Colors.black,
+                // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+                primaryColor: const Color.fromRGBO(206, 38, 64, 1.0),
+                textTheme: Theme
+                    .of(context)
+                    .textTheme
+                    .copyWith(
+                    caption: TextStyle(color: Colors.white,))),
+            // sets the inactive color of the `BottomNavigationBar`
+            child: BottomNavigationBar(
+              elevation: 0,
+              selectedFontSize: 10,
+              unselectedFontSize: 9,
+              selectedItemColor: Colors.white,
+              unselectedItemColor: Colors.white24,
+              iconSize: 25,
+              onTap: onTabTapped,
+              type: BottomNavigationBarType.fixed,
+              currentIndex: _currentIndex,
+              items: _pages,
+            ),
           ),
         ),
 
         SingleChildScrollView(
             child: Stack(
               children: <Widget>[
-                HomeAnimation(animation: animationScreen, name :_name),
+                HomeAnimation(animation: animationScreen, name: userData.firstName),
               ],
             )
         ),
+
       ],
-      ),
     );
+
+          /*
+          TabBar(
+                tabs: _tabs,
+
+                labelColor: Colors.black87.withOpacity(1.0),
+                unselectedLabelColor: Colors.black87.withOpacity(0.3),
+                indicatorColor: const Color.fromRGBO(206, 38, 64, 1.0),
+           */
   }
 }
 
@@ -190,6 +275,7 @@ class SideDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                Navigator.of(context).pop();
                 Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => StatsPage())
@@ -208,6 +294,7 @@ class SideDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                Navigator.of(context).pop();
                 Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ChatPage())
@@ -226,6 +313,7 @@ class SideDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                Navigator.of(context).pop();
                 Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => NotifsPage())
@@ -244,6 +332,7 @@ class SideDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                Navigator.of(context).pop();
                 Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => SettingsPage())
@@ -288,23 +377,30 @@ class HomeAnimation extends AnimatedWidget {
 
     final Animation<double> animation = listenable;
     return animation.value != 0.0
-    ? Container(
-      width: _width,
-      height: _height,
-      color:
-        animation.value > 0.4
-        ? const Color.fromRGBO(206, 38, 64, 1.0)
-        : const Color.fromRGBO(206, 38, 64, 1.0).withOpacity(animation.value * 2.5),
-      child: Material(
-        type: MaterialType.transparency,
-        child: Center(
-          child: Text("Hello, ${name}!",
-            style: TextStyle(fontSize: 25,color:
-                animation.value > 0.8
-                ? Colors.white.withOpacity(0.0)
-                : animation.value > 0.4
-                  ? Colors.white
-                  : Colors.white.withOpacity(animation.value * 2.5),
+    ? Opacity(
+      opacity: animation.value > 0.4
+        ? 1.0
+        : animation.value * 2.5,
+      child: Container(
+        width: _width,
+        height: _height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Material(
+          type: MaterialType.transparency,
+          child: Center(
+            child: Text("Hello, ${name}!",
+              style: TextStyle(fontSize: 25,color:
+                  animation.value > 0.8
+                  ? Colors.white.withOpacity(0.0)
+                  : animation.value > 0.4
+                    ? Colors.white
+                    : Colors.white.withOpacity(animation.value * 2.5),
+              ),
             ),
           ),
         ),

@@ -19,6 +19,10 @@ environment:
 dependencies:
   firebase_auth:
   cloud_firestore:
+  image_picker:
+  firebase_storage:
+  frideos: ^0.6.2
+
   flutter:
     sdk: flutter
 
@@ -45,6 +49,10 @@ flutter:
   assets:
     - assets/amc_logo.png
     - assets/amc_newark.jpg
+    - assets/fernando.jpg
+    - assets/default_profile_pic.jpg
+    - assets/theatre_blinds.jpg
+    - assets/background.png
 
   fonts:
     - family: AMC
@@ -53,6 +61,11 @@ flutter:
     - family: AMC2
       fonts:
         - asset: assets/amc_font2.ttf
+
+    # ICONS
+    - family: trophy
+      fonts:
+        - asset: assets/icons/trophy.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

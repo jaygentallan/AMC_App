@@ -1,10 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:amc/main.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-
-import '../home.dart';
 
 class StartAnimation extends StatefulWidget {
   StartAnimation({Key key, this.buttonController, this.user, this.pass})
@@ -49,7 +45,7 @@ class StartAnimation extends StatefulWidget {
           padding: const EdgeInsets.only(bottom: 60.0),
           child: Container(
             width: shrinkButtonAnimation.value,
-            height: 50.0,
+            height: 40.0,
             alignment: FractionalOffset.center,
             decoration: BoxDecoration(
               boxShadow: [
@@ -63,13 +59,13 @@ class StartAnimation extends StatefulWidget {
             ),
             child: FlatButton(
               onPressed: () {},
-                child: shrinkButtonAnimation.value > 85 ? // Conditional statement to change to loading indicator
+                child: shrinkButtonAnimation.value > 90 ? // Conditional statement to change to loading indicator
                 Text(
                   "Sign Up",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w300,
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.w400,
                     letterSpacing: 0.3,
                   ),
                 )

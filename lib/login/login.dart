@@ -6,9 +6,8 @@ import 'package:flutter/scheduler.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'home.dart';
-
-import 'animations/loginAnimation.dart';
+import 'package:amc/home/home.dart';
+import 'package:amc/animations/loginAnimation.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -54,19 +53,20 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         children: <Widget> [
           SizedBox(height: 50.0),
 
+          // BACKGROUND
           Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/amc_newark.jpg'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 2.5,sigmaY: 2.5),
-              child: Container(
-                decoration: BoxDecoration(color: Colors.white.withOpacity(0.1)),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/amc_newark.jpg'),
+                fit: BoxFit.cover,
               ),
             ),
+            child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 2.5,sigmaY: 2.5),
+                child: Container(
+                  decoration: BoxDecoration(color: Colors.black.withOpacity(0.1)),
+                ),
+              ),
           ),
 
           Container(
@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   child: Align (
                                     alignment: Alignment(0.0,0.55),
                                     child: Text(
-                                      "amazing",
+                                      "crew",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 22.5,
@@ -119,6 +119,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                     ),
                                   ),
                                 ),
+
                                 ],
                               ),
                             ),
@@ -126,6 +127,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                           SizedBox(height: 50.0),
 
                           TextField( // Email text box
+                            style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.only(
                                   left: 15.0, top: 5.0, bottom: 5.0),
@@ -152,6 +154,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                           SizedBox(height: 10.0), // Used as padding
 
                           TextField( // Password text box
+                            style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.only(
                                   left: 15.0, top: 5.0, bottom: 5.0),
@@ -241,7 +244,7 @@ class LoginButton extends StatelessWidget {
       children: <Widget>[
         Container(
           width: 220.0,
-          height: 50.0,
+          height: 40.0,
           alignment: FractionalOffset.center,
           decoration: BoxDecoration(
             boxShadow: [
@@ -257,8 +260,8 @@ class LoginButton extends StatelessWidget {
             "Log In",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 15.0,
-              fontWeight: FontWeight.w300,
+              fontSize: 17.0,
+              fontWeight: FontWeight.w400,
               letterSpacing: 0.3,
             ),
           ),
@@ -279,7 +282,7 @@ class SignupButton extends StatelessWidget {
             style: TextStyle(
               color: Colors.white,
               fontSize: 12.0,
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.w400,
               letterSpacing: 0.3,
             ),
           ),

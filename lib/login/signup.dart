@@ -4,11 +4,11 @@ import 'package:amc/main.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'home.dart';
-import 'animations/signupAnimation.dart';
+import 'package:amc/home/home.dart';
+import 'package:amc/animations/signupAnimation.dart';
 
-import 'services/usermanagement.dart';
-import 'services/crud.dart';
+import 'package:amc/services/usermanagement.dart';
+import 'package:amc/services/crud.dart';
 
 
 class SignupPage extends StatefulWidget {
@@ -24,7 +24,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
   String _email;
   String _password;
 
-  crudMethods crud = crudMethods();
+  CrudMethods crud = CrudMethods();
 
   AnimationController animationControllerButton;
   Animation animationScreen;
@@ -72,7 +72,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 2.5,sigmaY: 2.5),
             child: Container(
-              decoration: BoxDecoration(color: Colors.white.withOpacity(0.1)),
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.1)),
               ),
             ),
           ),
@@ -117,7 +117,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                                 child: Align (
                                   alignment: Alignment(0.0,0.55),
                                   child: Text(
-                                    "amazing",
+                                    "crew",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 22.5,
@@ -127,6 +127,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                                   ),
                                 ),
                               ),
+
                             ],
                           ),
                         ),
@@ -134,6 +135,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                         SizedBox(height: 50.0),
 
                         TextField(
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.only(left: 15.0,top: 5.0,bottom: 5.0),
                             focusedBorder: UnderlineInputBorder(
@@ -152,6 +154,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                         ),
 
                         TextField(
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.only(left: 15.0,top: 5.0,bottom: 5.0),
                             focusedBorder: UnderlineInputBorder(
@@ -170,6 +173,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                         ),
 
                         TextField(
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.only(left: 15.0,top: 5.0,bottom: 5.0),
                             focusedBorder: UnderlineInputBorder(
@@ -190,6 +194,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                         SizedBox(height: 10.0),
 
                         TextField(
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.only(left: 15.0,top: 5.0,bottom: 5.0),
                             focusedBorder: UnderlineInputBorder(
@@ -211,6 +216,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                         SizedBox(height: 10.0),
 
                         TextField(
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.only(left: 15.0,top: 5.0,bottom: 5.0),
                             focusedBorder: UnderlineInputBorder(
@@ -230,7 +236,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                           obscureText: true,
                         ),
 
-                        SizedBox(height: 40.0), // Used as paddingz
+                        SizedBox(height: 120.0), // Used as padding
 
                         Stack(
                           alignment: Alignment.bottomCenter,
@@ -239,7 +245,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
 
                             statusClick == 0 // Condition statement if button is clicked
                                 ? Padding(
-                                padding: const EdgeInsets.only(bottom: 60.0),
+                                padding: const EdgeInsets.only(bottom: 50.0),
                                 child: InkWell(
                                   onTap: () async {
                                     setState(() {
@@ -316,7 +322,7 @@ class SignupButton extends StatelessWidget {
       children: <Widget>[
         Container(
           width: 220.0,
-          height: 50.0,
+          height: 40.0,
           alignment: FractionalOffset.center,
           decoration: BoxDecoration(
             boxShadow: [
@@ -332,8 +338,8 @@ class SignupButton extends StatelessWidget {
             "Sign Up",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 15.0,
-              fontWeight: FontWeight.w300,
+              fontSize: 17.0,
+              fontWeight: FontWeight.w400,
               letterSpacing: 0.3,
             ),
           ),
@@ -354,7 +360,7 @@ class CancelButton extends StatelessWidget {
             style: TextStyle(
               color: Colors.white,
               fontSize: 12.0,
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.w400,
               letterSpacing: 0.3,
             ),
           ),

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:amc/main.dart';
 
-import 'main.dart';
-
-class ChatPage extends StatelessWidget {
+class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,27 +10,42 @@ class ChatPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: Image.asset(
                 'assets/amc_logo.png',
-                width: 40.0,
-                height: 40.0,
+                width: 30.0,
+                height: 30.0,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Messages'),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                'Settings',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 17
+                ),
+              ),
             ),
           ],
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.black87,
+        backgroundColor: Colors.black,
       ),
       endDrawer: SideDrawer(),
-      body: Center(
-        child: Icon(
-          Icons.chat,
-          size: 64.0,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Icon(
+            Icons.settings,
+            size: 64.0,
+            color: Colors.white,
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
