@@ -30,12 +30,10 @@ class ShiftsPage extends StatelessWidget {
               children: <Widget>[
                 Material(
                   color: Colors.black,
-                  textStyle: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12),
                   child: TabBar(
                     tabs: _tabs,
                     labelColor: Colors.white,
+                    labelStyle: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),
                     unselectedLabelColor: Colors.white30,
                     indicatorColor: const Color.fromRGBO(206, 38, 64, 1.0),
                   ),

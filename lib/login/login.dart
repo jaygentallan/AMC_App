@@ -15,9 +15,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
-  var statusClick = 0;
+  int statusClick = 0;
   String _email;
   String _password;
+
+  final String invalidCredentials = 'Invalid email/password';
+  static int errorCredentials = 0;
 
   AnimationController animationControllerButton;
   Animation animationScreen;
@@ -179,6 +182,14 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                             obscureText: true,
                           ),
 
+                          SizedBox(height: 10.0), // Used as padding
+                          // Check if there is an error that occured
+                          errorCredentials == 1
+                              ? ErrorMessage(invalidCredentials)
+                              : errorCredentials == 1
+                              ? errorCredentials = 0
+                              : Container(width: 0.0, height: 0.0),
+
                           SizedBox(height: 40.0), // Used as padding
                         ],
                       )
@@ -195,8 +206,24 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: <Widget>[
-                  SignupButton(),
+                  // SIGNUP BUTTON
+                  FlatButton(
+                    child: Text(
+                      "Don't have an account? Sign up here",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    onPressed: () {
+                      errorCredentials = 0;
+                      Navigator.of(context).pushNamed('/signup');
+                    },
+                  ),
 
+                  // LOGIN BUTTON
                   statusClick == 0 // Condition statement if button is clicked
                     ? Padding(
                       padding: const EdgeInsets.only(bottom: 50.0),
@@ -213,9 +240,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                             email: _email,
                             password: _password,)
                               .then((FirebaseUser user) {
+                            errorCredentials = 0;
                             Navigator.of(context).pushReplacementNamed('/homepage');
                           }) // If authorized, sends to homepage
                               .catchError((e) {
+                            errorCredentials = 1;
                             Navigator.of(context).pushReplacementNamed('/login');
                             print(e);
                           }
@@ -271,26 +300,21 @@ class LoginButton extends StatelessWidget {
   }
 }
 
-class SignupButton extends StatelessWidget {
+class ErrorMessage extends StatelessWidget {
+  final String errorMessage;
+
+  ErrorMessage(this.errorMessage);
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        FlatButton(
-          child: Text(
-            "Don't have an account? Sign up here",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 12.0,
-              fontWeight: FontWeight.w400,
-              letterSpacing: 0.3,
-            ),
-          ),
-          onPressed: () {
-            Navigator.of(context).pushNamed('/signup');
-          },
-        ),
-      ],
+    return Text(
+      errorMessage,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 15.0,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.3,
+      ),
     );
   }
 }

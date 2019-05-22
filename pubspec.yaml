@@ -21,6 +21,7 @@ dependencies:
   cloud_firestore:
   image_picker:
   firebase_storage:
+  firebase_database:
   frideos: ^0.6.2
 
   flutter:
@@ -66,6 +67,9 @@ flutter:
     - family: trophy
       fonts:
         - asset: assets/icons/trophy.ttf
+    - family: line_icons
+      fonts:
+        - asset: assets/icons/line_icons.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

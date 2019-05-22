@@ -42,7 +42,7 @@ class SettingsPage extends StatelessWidget {
         ),
         child: Center(
           child: Icon(
-            Icons.settings,
+            IconData(0xe810,fontFamily: 'line_icons'),
             size: 64.0,
             color: Colors.white,
           ),

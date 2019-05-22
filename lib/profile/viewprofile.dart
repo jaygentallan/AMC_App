@@ -14,47 +14,35 @@ import 'package:amc/services/usermanagement.dart';
 import 'package:amc/singletons/userdata.dart';
 
 class ProfilePage extends StatelessWidget {
-  Future<void> _refresh() async
-  {
-    print('refreshing');
-    ProfilePage();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
-        children: <Widget>[
+      children: <Widget>[
 
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/background.png'),
-                alignment: Alignment.bottomCenter,
-                fit: BoxFit.cover,
-              ),
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/background.png'),
+              alignment: Alignment.bottomCenter,
+              fit: BoxFit.cover,
             ),
           ),
+        ),
 
-          RefreshIndicator(
-            backgroundColor: const Color.fromRGBO(206, 38, 64, 1.0),
-            color: Colors.white,
-            onRefresh: _refresh,
-            child: ListView(
-              children: <Widget>[
-                SizedBox(height: 25.0),
+        ListView(
+          children: <Widget>[
 
-                ProfilePic(),
+            ProfilePic(),
 
-                SizedBox(height: 5.0),
+            SizedBox(height: 5.0),
 
-                UserInfo(),
+            UserInfo(),
 
-                SizedBox(height: 20.0),
+            SizedBox(height: 20.0),
 
-              ],
-            ),
-          ),
-        ],
+          ],
+        )
+      ],
     );
   }
 }
@@ -66,42 +54,15 @@ class ProfilePic extends StatefulWidget {
 
 class _ProfilePicState extends State<ProfilePic> {
   File profilePic;
-  File newProfilePic;
-
-  QuerySnapshot profileData;
-  UserManagement userManagement = UserManagement();
-  CrudMethods crud = CrudMethods();
 
   Future getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
-      newProfilePic = tempImage;
+      profilePic = tempImage;
     });
-    uploadImage();
   }
-  /*
-  Future<DocumentReference> getUserDoc() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final Firestore _firestore = Firestore.instance;
 
-    FirebaseUser user = await _auth.currentUser();
-    DocumentReference ref = _firestore.collection('users').document(userData.uid);
-    return ref;
-  } */
-
-  uploadImage() async {
-
-    final StorageReference firebaseStorageRef =
-      FirebaseStorage.instance.ref().child('profilepics/${userData.uid}.jpg');
-    StorageUploadTask task = firebaseStorageRef.putFile(newProfilePic);
-
-    var downurl = await (await task.onComplete).ref.getDownloadURL();
-    String url = downurl.toString();
-
-    userManagement.updateProfilePic(url);
-
-    //Firestore.instance.collection('users').document(docRef.documentID).updateData({'profilePic': url});
-  }
+  UserManagement userManagement = UserManagement();
 
   @override
   Widget build(BuildContext context) {
@@ -119,17 +80,13 @@ class _ProfilePicState extends State<ProfilePic> {
               image: DecorationImage(
                 fit: BoxFit.cover,
                 alignment: Alignment.center,
-                image: NetworkImage(
-                  userData.profilePic,
+                image: AssetImage(
+                  profilePic == null
+                      ? "assets/default_profile_pic.jpg"
+                      : null,
                 ),
               ),
             ),
-            child: Material(
-              color: Colors.transparent,
-              child: GestureDetector(
-                onTap: getImage,
-              )
-            )
           ),
         ],
       ),
@@ -145,35 +102,8 @@ class UserInfo extends StatefulWidget {
 class _UserInfoState extends State<UserInfo> {
   bool init = true;
 
-  String favMovie;
-  String bio;
-
   QuerySnapshot profileData;
   CrudMethods crud = CrudMethods();
-
-  Future<bool> addDialog(BuildContext context) async {
-    return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context)
-    {
-      return AlertDialog(
-        title: Text('Favorite Movie', style: TextStyle(fontSize: 15)),
-        content: Center(
-          child: Container(
-            child: TextField(
-              decoration: InputDecoration(
-                  hintText: 'Enter your favorite movie'),
-              onChanged: (value) {
-                this.favMovie = value;
-              }
-              ),
-            ),
-            ),
-          );
-        }
-      );
-    }
 
   @override
   Widget build(BuildContext context) {
@@ -231,59 +161,39 @@ class _UserInfoState extends State<UserInfo> {
                     child: Row(
                       children: <Widget> [
 
-                      Icon(
-                        IconData(0xe824,fontFamily: 'line_icons'),
-                        color: const Color.fromRGBO(212,175,55, 1.0),
-                        size: 28,
-                      ),
-
-                      SizedBox(width: 10.0),
-
-                      Text(
-                        "Favorite Movie",
-                        style: TextStyle(
+                        Icon(
+                          IconData(0xe824,fontFamily: 'line_icons'),
                           color: const Color.fromRGBO(212,175,55, 1.0),
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.3,
+                          size: 28,
                         ),
-                      ),
 
-                      // EDIT BUTTON
-                      ButtonTheme(
-                        minWidth: 10,
-                        height: 20,
-                        splashColor: Colors.transparent,
-                        child: FlatButton(
-                          onPressed: () {
-                            addDialog(context);
-                          },
-                          child: Icon(
-                              IconData(0xe802,fontFamily: 'line_icons'),
-                              color: Colors.white24,
-                              size: 20,
-                            ),
+                        SizedBox(width: 10.0),
+
+                        Text(
+                          "Favorite Movie",
+                          style: TextStyle(
+                            color: const Color.fromRGBO(212,175,55, 1.0),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.3,
                           ),
                         ),
-
                       ],
                     ),
                   ),
                 ],
               ),
 
+              SizedBox(height: 5.0),
+
               // FAVORITE MOVIE OUTPUT
               Container(
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 40.0),
                 child: Text(
-                  userData.favMovie == ''
-                  ? 'Add your favorite movie!'
-                  : '${userData.favMovie}',
+                  "• Scott Pilgrim vs. The World",
                   style: TextStyle(
-                    color: userData.favMovie == null
-                      ? Colors.white
-                      : Colors.white24,
+                    color:  Colors.white,
                     fontSize: 15.0,
                     fontStyle: FontStyle.italic,
                     letterSpacing: 0.3,
@@ -312,36 +222,14 @@ class _UserInfoState extends State<UserInfo> {
                         SizedBox(width: 10.0),
 
                         Text(
-                          userData.favMovie == ''
-                              ? 'Add your favorite movie!'
-                              : '${userData.favMovie}',
+                          "Biography",
                           style: TextStyle(
-                            color: userData.favMovie == null
-                                ? Colors.white
-                                : Colors.white24,
+                            color: const Color.fromRGBO(212,175,55, 1.0),
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.3,
                           ),
                         ),
-
-                        // EDIT BUTTON
-                        ButtonTheme(
-                          minWidth: 10,
-                          height: 20,
-                          splashColor: Colors.transparent,
-                          child: FlatButton(
-                            onPressed: () {
-                              print('Button Pressed');
-                            },
-                            child: Icon(
-                              IconData(0xe802,fontFamily: 'line_icons'),
-                              color: Colors.white24,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-
                       ],
                     ),
                   ),
@@ -354,7 +242,7 @@ class _UserInfoState extends State<UserInfo> {
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 40.0),
                 child: Text(
-                  "The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly but gets faster each minute after you hear this signal bodeboop. A sing lap should be completed every time you hear this sound. ding Remember to run in a straight line and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark. Get ready!… Start. ding﻿",
+                  "• The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly but gets faster each minute after you hear this signal bodeboop. A sing lap should be completed every time you hear this sound. ding Remember to run in a straight line and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark. Get ready!… Start. ding﻿",
                   style: TextStyle(
                     color:  Colors.white,
                     fontSize: 15.0,

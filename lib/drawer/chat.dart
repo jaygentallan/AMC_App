@@ -42,7 +42,7 @@ class ChatPage extends StatelessWidget {
         ),
         child: Center(
           child: Icon(
-            Icons.chat,
+            IconData(0xe83f,fontFamily: 'line_icons'),
             size: 64.0,
             color: Colors.white,
             ),

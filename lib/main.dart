@@ -94,22 +94,22 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
 
   final _pages = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
-        icon: Icon(Icons.home),
+        icon: Icon(IconData(0xe800,fontFamily: 'line_icons')),
         title: Text(
           'HOME',
           style: TextStyle(fontWeight: FontWeight.w400),)),
     BottomNavigationBarItem(
-      icon: Icon(Icons.schedule),
+      icon: Icon(IconData(0xe836,fontFamily: 'line_icons')),
       title: Text(
         'SHIFTS',
         style: TextStyle(fontWeight: FontWeight.w400))),
     BottomNavigationBarItem(
-      icon: Icon(Icons.people),
+      icon: Icon(IconData(0xe82b,fontFamily: 'line_icons')),
       title: Text(
         'SOCIAL',
         style: TextStyle(fontWeight: FontWeight.w400))),
     BottomNavigationBarItem(
-      icon: Icon(Icons.person),
+      icon: Icon(IconData(0xe82a,fontFamily: 'line_icons')),
       title: Text(
         'PROFILE',
         style: TextStyle(fontWeight: FontWeight.w400))),
@@ -121,6 +121,8 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
     new GlobalKey<FormState>(debugLabel: '_loginFormKey');
     return Stack(
       children: <Widget>[
+
+        // Gets the user data and puts it into a singleton
         init == true
             ? FutureBuilder(
           future: FirebaseAuth.instance.currentUser(),
@@ -130,17 +132,52 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
                 crud.getProfileData(snapshot.data).then((results) {
                   setState(() {
                     profileData = results;
+
+                    // Store firebase data to singleton firstName
                     userData.firstName =
                     profileData.documents[0].data['firstName'] != null
                         ? profileData.documents[0].data['firstName']
                         .replaceAll("\'", "")
                         : '';
+
+                    // Store firebase data to singleton lastName
                     userData.lastName =
                     profileData.documents[0].data['lastName'] != null
                         ? profileData.documents[0].data['lastName']
                         .replaceAll("\'", "")
                         : '';
+
+                    // Store firebase data to singleton UID
+                    userData.uid =
+                    profileData.documents[0].data['uid'] != null
+                        ? profileData.documents[0].data['uid']
+                        .replaceAll("\'", "")
+                        : '';
+
+                    // Store firebase data to singleton profileID
+                    userData.profilePic =
+                    profileData.documents[0].data['profilePic'] != null
+                        ? profileData.documents[0].data['profilePic']
+                        .replaceAll("\'", "")
+                        : '';
+
+                    // Store firebase data to singleton favMovie
+                    userData.favMovie =
+                    profileData.documents[0].data['favMovie'] != null
+                        ? profileData.documents[0].data['favMovie']
+                        .replaceAll("\'", "")
+                        : '';
+
+                    // Store firebase data to singleton favMovie
+                    userData.bio =
+                    profileData.documents[0].data['bio'] != null
+                        ? profileData.documents[0].data['bio']
+                        .replaceAll("\'", "")
+                        : '';
+
+                    // Turns off initialization
                     init = false;
+
                   });
                 });
               } else {
@@ -153,53 +190,58 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
         )
             : Container(width: 0.0, height: 0.0),
 
+        // UI Scaffold
         Scaffold(
           key: _loginFormKey,
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Image.asset(
-                    'assets/amc_logo.png',
-                    width: 30.0,
-                    height: 30.0,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(40.0),
+            child: AppBar(
+              automaticallyImplyLeading: false,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Image.asset(
+                      'assets/amc_logo.png',
+                      width: 30.0,
+                      height: 30.0,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child:
-                  _currentIndex == 0
-                    ? Text(
-                      'Home',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 17))
-                    : _currentIndex == 1
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child:
+                    // Changes header depending on page
+                    _currentIndex == 0
                       ? Text(
-                        'Shifts',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 17))
-                      : _currentIndex == 2
+                        'Home',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25))
+                      : _currentIndex == 1
                         ? Text(
-                          'Social',
+                          'Shifts',
                             style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 17))
-                        : _currentIndex == 3
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25))
+                        : _currentIndex == 2
                           ? Text(
-                            'Profile',
+                            'Social',
                               style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 17))
-                          : Container(width: 0.0,height: 0.0)
-                ),
-              ],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25))
+                          : _currentIndex == 3
+                            ? Text(
+                              'Profile',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25))
+                            : Container(width: 0.0,height: 0.0)
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.black,
             ),
-            backgroundColor: Colors.black,
           ),
           endDrawer: SideDrawer(),
           body: _children[_currentIndex],
@@ -221,7 +263,7 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
               unselectedFontSize: 9,
               selectedItemColor: Colors.white,
               unselectedItemColor: Colors.white24,
-              iconSize: 25,
+              iconSize: 22.5,
               onTap: onTabTapped,
               type: BottomNavigationBarType.fixed,
               currentIndex: _currentIndex,
@@ -240,15 +282,6 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
 
       ],
     );
-
-          /*
-          TabBar(
-                tabs: _tabs,
-
-                labelColor: Colors.black87.withOpacity(1.0),
-                unselectedLabelColor: Colors.black87.withOpacity(0.3),
-                indicatorColor: const Color.fromRGBO(206, 38, 64, 1.0),
-           */
   }
 }
 
@@ -265,11 +298,11 @@ class SideDrawer extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: Icon(
-                Icons.contacts,
+                IconData(0xe843,fontFamily: 'line_icons'),
                 color: Colors.white,
               ),
               title: Text(
-                'My Stats',
+                'Stats',
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -284,7 +317,7 @@ class SideDrawer extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(
-                Icons.textsms,
+                IconData(0xe83f,fontFamily: 'line_icons'),
                 color: Colors.white,
               ),
               title: Text(
@@ -303,7 +336,7 @@ class SideDrawer extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(
-                Icons.notifications,
+                IconData(0xe858,fontFamily: 'line_icons'),
                 color: Colors.white,
               ),
               title: Text(
@@ -322,7 +355,7 @@ class SideDrawer extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(
-                Icons.settings,
+                IconData(0xe810,fontFamily: 'line_icons'),
                 color: Colors.white,
               ),
               title: Text(
@@ -341,7 +374,7 @@ class SideDrawer extends StatelessWidget {
             ),
             ListTile(
                 leading: Icon(
-                  Icons.exit_to_app,
+                  IconData(0xe820,fontFamily: 'line_icons'),
                   color: Colors.white,
                 ),
                 title: Text(

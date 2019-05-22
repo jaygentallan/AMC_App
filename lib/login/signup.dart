@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:amc/main.dart';
 
@@ -23,6 +24,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
   String _employeeID;
   String _email;
   String _password;
+  //String _docID;
 
   CrudMethods crud = CrudMethods();
 
@@ -259,7 +261,14 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                                       email: _email,
                                       password: _password,
                                     ).then((signedInUser) {
-                                      List<String> data = [this._firstName,this._lastName,this._employeeID];
+                                      //_docID = Firestore.instance.document().documentID;
+
+                                      List<String> data = [
+                                        this._firstName,
+                                        this._lastName,
+                                        this._employeeID,
+                                        //this._docID,
+                                      ];
 
                                       UserManagement().storeNewUser(signedInUser, data, context);
 

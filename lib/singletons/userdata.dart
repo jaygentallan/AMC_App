@@ -5,6 +5,11 @@ class UserData {
 
   String firstName = '';
   String lastName = '';
+  String uid = '';
+  String profilePic = '';
+  String docID = '';
+  String favMovie = '';
+  String bio = '';
 
   factory UserData() {
     return _userData;

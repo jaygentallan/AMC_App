@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:amc/singletons/userdata.dart';
 
 class CrudMethods {
 
@@ -20,9 +21,16 @@ class CrudMethods {
     );
   }
 
+  getData() async {
+    return await Firestore.instance.collection('users').snapshots();
+  }
+
   getProfileData(user) async {
     return await Firestore.instance.collection('users').where('uid', isEqualTo: user.uid).getDocuments();
   }
 
+  updateData(selectedDoc, value) {
+    Firestore.instance.collection('users').document(selectedDoc).updateData(value).catchError((e) { print(e); });
+  }
 
 }

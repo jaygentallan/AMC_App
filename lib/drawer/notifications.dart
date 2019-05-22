@@ -42,7 +42,7 @@ class NotifsPage extends StatelessWidget {
         ),
         child: Center(
           child: Icon(
-            Icons.notifications,
+            IconData(0xe858,fontFamily: 'line_icons'),
             size: 64.0,
             color: Colors.white,
           ),
