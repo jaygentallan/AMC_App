@@ -139,6 +139,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                         TextField(
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            fillColor: Colors.black26,
                             contentPadding: const EdgeInsets.only(left: 15.0,top: 5.0,bottom: 5.0),
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: const Color.fromRGBO(206, 38, 64, 1.0)),
@@ -149,15 +150,19 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                             hintStyle: TextStyle(color: Colors.white24),
                             filled: true,
                           ),
+                          cursorColor: const Color.fromRGBO(206, 38, 64, 1.0),
                           onChanged: (value) {
                             setState(() {
                               _firstName = value; }
                             );},
                         ),
 
+                        SizedBox(height: 10.0),
+
                         TextField(
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            fillColor: Colors.black26,
                             contentPadding: const EdgeInsets.only(left: 15.0,top: 5.0,bottom: 5.0),
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: const Color.fromRGBO(206, 38, 64, 1.0)),
@@ -168,15 +173,19 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                             hintStyle: TextStyle(color: Colors.white24),
                             filled: true,
                           ),
+                          cursorColor: const Color.fromRGBO(206, 38, 64, 1.0),
                           onChanged: (value) {
                             setState(() {
                               _lastName = value; }
                             );},
                         ),
 
+                        SizedBox(height: 10.0),
+
                         TextField(
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            fillColor: Colors.black26,
                             contentPadding: const EdgeInsets.only(left: 15.0,top: 5.0,bottom: 5.0),
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: const Color.fromRGBO(206, 38, 64, 1.0)),
@@ -187,6 +196,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                           hintStyle: TextStyle(color: Colors.white24),
                           filled: true,
                           ),
+                          cursorColor: const Color.fromRGBO(206, 38, 64, 1.0),
                           onChanged: (value) {
                             setState(() {
                             _email = value; }
@@ -198,6 +208,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                         TextField(
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            fillColor: Colors.black26,
                             contentPadding: const EdgeInsets.only(left: 15.0,top: 5.0,bottom: 5.0),
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: const Color.fromRGBO(206, 38, 64, 1.0)),
@@ -208,6 +219,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                             hintStyle: TextStyle(color: Colors.white24),
                             filled: true,
                           ),
+                          cursorColor: const Color.fromRGBO(206, 38, 64, 1.0),
                           onChanged: (value) {
                             setState(() {
                               _employeeID = value; }
@@ -220,6 +232,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                         TextField(
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            fillColor: Colors.black26,
                             contentPadding: const EdgeInsets.only(left: 15.0,top: 5.0,bottom: 5.0),
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: const Color.fromRGBO(206, 38, 64, 1.0)),
@@ -230,6 +243,7 @@ class _SignupPageState extends State<SignupPage> with TickerProviderStateMixin{
                             hintStyle: TextStyle(color: Colors.white24),
                             filled: true,
                           ),
+                          cursorColor: const Color.fromRGBO(206, 38, 64, 1.0),
                           onChanged: (value) {
                             setState(() {
                               _password = value; }

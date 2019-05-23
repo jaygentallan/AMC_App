@@ -132,6 +132,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                           TextField( // Email text box
                             style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
+                              fillColor: Colors.black26,
                               contentPadding: const EdgeInsets.only(
                                   left: 15.0, top: 5.0, bottom: 5.0),
                               focusedBorder: UnderlineInputBorder(
@@ -146,6 +147,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                               hintStyle: TextStyle(color: Colors.white24),
                               filled: true,
                             ),
+                            cursorColor: const Color.fromRGBO(206, 38, 64, 1.0),
                             onChanged: (value) {
                               setState(() {
                                 _email = value;
@@ -159,6 +161,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                           TextField( // Password text box
                             style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
+                              fillColor: Colors.black26,
                               contentPadding: const EdgeInsets.only(
                                   left: 15.0, top: 5.0, bottom: 5.0),
                               focusedBorder: UnderlineInputBorder(
@@ -173,6 +176,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                               hintStyle: TextStyle(color: Colors.white24),
                               filled: true,
                             ),
+                            cursorColor: const Color.fromRGBO(206, 38, 64, 1.0),
+
                             onChanged: (value) {
                               setState(() {
                                 _password = value;

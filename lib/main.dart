@@ -27,6 +27,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      //showPerformanceOverlay: true,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Roboto'),
       home: Main(),
@@ -180,6 +181,12 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
 
                   });
                 });
+
+                // Get document reference and put to singleton
+                crud.getData().then((results) {
+                  userData.users = results;
+                });
+
               } else {
                 return Container(width: 0.0, height: 0.0);
               }
@@ -216,26 +223,26 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
                       ? Text(
                         'Home',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25))
+                          fontWeight: FontWeight.w800,
+                          fontSize: 22))
                       : _currentIndex == 1
                         ? Text(
                           'Shifts',
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25))
+                              fontWeight: FontWeight.w800,
+                              fontSize: 22))
                         : _currentIndex == 2
                           ? Text(
                             'Social',
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25))
+                                fontWeight: FontWeight.w800,
+                                fontSize: 22))
                           : _currentIndex == 3
                             ? Text(
                               'Profile',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25))
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 22))
                             : Container(width: 0.0,height: 0.0)
                   ),
                 ],

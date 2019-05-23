@@ -22,7 +22,7 @@ class CrudMethods {
   }
 
   getData() async {
-    return await Firestore.instance.collection('users').snapshots();
+    return await Firestore.instance.collection('users').getDocuments();
   }
 
   getProfileData(user) async {

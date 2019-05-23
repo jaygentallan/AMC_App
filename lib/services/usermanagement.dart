@@ -59,14 +59,15 @@ class UserManagement {
           .where('uid', isEqualTo: user.uid)
           .getDocuments()
           .then((docs) {
-            Firestore.instance.document('/users/${docs.documents[0].documentID}')
-                .updateData({'profilePic': picUrl})
-                .then((val) {
-                  print('Updated');
-            });
+        Firestore.instance.document('/users/${docs.documents[0].documentID}')
+            .updateData({'profilePic': picUrl})
+            .then((val) {
+          print('Updated');
+        });
       });
     });
-    /*
+  }
+      /*
     Firestore.instance
       .collection('users')
       .document()
@@ -76,5 +77,42 @@ class UserManagement {
       });
     */
 
+  updateFavMovie(data) {
+    userData.favMovie = data;
+    var userInfo = UserUpdateInfo();
+    userInfo.displayName = data;
+
+    FirebaseAuth.instance.currentUser().then((user) {
+      Firestore.instance.collection('/users')
+          .where('uid', isEqualTo: user.uid)
+          .getDocuments()
+          .then((docs) {
+        Firestore.instance.document('/users/${docs.documents[0].documentID}')
+            .updateData({'favMovie': data})
+            .then((val) {
+          print('Updated');
+        });
+      });
+    });
   }
+
+  updateProfileBio(data) {
+    userData.bio = data;
+    var userInfo = UserUpdateInfo();
+    userInfo.displayName = data;
+
+    FirebaseAuth.instance.currentUser().then((user) {
+      Firestore.instance.collection('/users')
+          .where('uid', isEqualTo: user.uid)
+          .getDocuments()
+          .then((docs) {
+        Firestore.instance.document('/users/${docs.documents[0].documentID}')
+            .updateData({'bio': data})
+            .then((val) {
+          print('bio');
+        });
+      });
+    });
+  }
+
 }

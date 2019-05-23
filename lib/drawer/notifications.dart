@@ -5,32 +5,35 @@ class NotifsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: Image.asset(
-                'assets/amc_logo.png',
-                width: 30.0,
-                height: 30.0,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                'Notifications',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40.0),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.black,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: Image.asset(
+                  'assets/amc_logo.png',
+                  width: 30.0,
+                  height: 30.0,
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  'Notifications',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 22
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.black,
       ),
       endDrawer: SideDrawer(),
       body: Container(

@@ -42,7 +42,7 @@ class StartAnimation extends StatefulWidget {
     return Stack(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(bottom: 60.0),
+          padding: const EdgeInsets.only(bottom: 50.0),
           child: Container(
             width: shrinkButtonAnimation.value,
             height: 40.0,
@@ -59,7 +59,7 @@ class StartAnimation extends StatefulWidget {
             ),
             child: FlatButton(
               onPressed: () {},
-                child: shrinkButtonAnimation.value > 90 ? // Conditional statement to change to loading indicator
+                child: shrinkButtonAnimation.value > 95 ? // Conditional statement to change to loading indicator
                 Text(
                   "Sign Up",
                   style: TextStyle(

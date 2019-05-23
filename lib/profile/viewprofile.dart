@@ -1,48 +1,80 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:amc/services/usermanagement.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:amc/services/crud.dart';
-import 'package:amc/services/usermanagement.dart';
 
 import 'package:amc/singletons/userdata.dart';
 
-class ProfilePage extends StatelessWidget {
+class ViewProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-
-        Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/background.png'),
-              alignment: Alignment.bottomCenter,
-              fit: BoxFit.cover,
+    return Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(40.0),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.black,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Image.asset(
+                    'assets/amc_logo.png',
+                    width: 30.0,
+                    height: 30.0,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    'Profile',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 22
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-
-        ListView(
+        body: Stack(
           children: <Widget>[
 
-            ProfilePic(),
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/background.png'),
+                  alignment: Alignment.bottomCenter,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
 
-            SizedBox(height: 5.0),
+            ListView(
+              children: <Widget>[
 
-            UserInfo(),
+                ProfilePic(),
 
-            SizedBox(height: 20.0),
+                SizedBox(height: 5.0),
 
+                UserInfo(),
+
+                SizedBox(height: 20.0),
+
+              ],
+            )
           ],
-        )
-      ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Icon(
+            Icons.arrow_back,
+          ),
+          backgroundColor: const Color.fromRGBO(206, 38, 64, 1.0),
+        ),
     );
   }
 }
@@ -53,16 +85,6 @@ class ProfilePic extends StatefulWidget {
 }
 
 class _ProfilePicState extends State<ProfilePic> {
-  File profilePic;
-
-  Future getImage() async {
-    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      profilePic = tempImage;
-    });
-  }
-
-  UserManagement userManagement = UserManagement();
 
   @override
   Widget build(BuildContext context) {
@@ -73,20 +95,18 @@ class _ProfilePicState extends State<ProfilePic> {
         children: <Widget>[
 
           Container(
-            width: 190.0,
-            height: 190.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
-                image: AssetImage(
-                  profilePic == null
-                      ? "assets/default_profile_pic.jpg"
-                      : null,
+              width: 190.0,
+              height: 190.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  image: NetworkImage(
+                    userData.viewUser.data['profilePic'],
+                  ),
                 ),
               ),
-            ),
           ),
         ],
       ),
@@ -102,16 +122,19 @@ class UserInfo extends StatefulWidget {
 class _UserInfoState extends State<UserInfo> {
   bool init = true;
 
-  QuerySnapshot profileData;
-  CrudMethods crud = CrudMethods();
-
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    double _width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    double _height = MediaQuery
+        .of(context)
+        .size
+        .height;
 
     return Column(
-      children: <Widget> [
+      children: <Widget>[
 
         // FULL NAME
         Container(
@@ -119,9 +142,9 @@ class _UserInfoState extends State<UserInfo> {
           height: 60.0,
           alignment: Alignment.center,
           child: Column(
-            children: <Widget> [
+            children: <Widget>[
               Text(
-                "${userData.firstName} ${userData.lastName}",
+                "${userData.viewUser.data['firstName']} ${userData.viewUser.data['lastName']}",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 25.0,
@@ -155,15 +178,15 @@ class _UserInfoState extends State<UserInfo> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget> [
+                children: <Widget>[
 
                   Container(
                     child: Row(
-                      children: <Widget> [
+                      children: <Widget>[
 
                         Icon(
-                          IconData(0xe824,fontFamily: 'line_icons'),
-                          color: const Color.fromRGBO(212,175,55, 1.0),
+                          IconData(0xe824, fontFamily: 'line_icons'),
+                          color: const Color.fromRGBO(212, 175, 55, 1.0),
                           size: 28,
                         ),
 
@@ -172,28 +195,31 @@ class _UserInfoState extends State<UserInfo> {
                         Text(
                           "Favorite Movie",
                           style: TextStyle(
-                            color: const Color.fromRGBO(212,175,55, 1.0),
+                            color: const Color.fromRGBO(212, 175, 55, 1.0),
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.3,
                           ),
                         ),
+
                       ],
                     ),
                   ),
                 ],
               ),
 
-              SizedBox(height: 5.0),
-
               // FAVORITE MOVIE OUTPUT
               Container(
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 40.0),
                 child: Text(
-                  "• Scott Pilgrim vs. The World",
+                  userData.viewUser.data['favMovie'] == '' || userData.viewUser.data['favMovie'] == null
+                      ? 'None'
+                      : '${userData.viewUser.data['favMovie']}',
                   style: TextStyle(
-                    color:  Colors.white,
+                    color: userData.viewUser.data['favMovie'] == '' || userData.viewUser.data['favMovie'] == null
+                        ? Colors.white24
+                        : Colors.white,
                     fontSize: 15.0,
                     fontStyle: FontStyle.italic,
                     letterSpacing: 0.3,
@@ -207,29 +233,30 @@ class _UserInfoState extends State<UserInfo> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget> [
+                children: <Widget>[
 
                   Container(
                     child: Row(
-                      children: <Widget> [
+                      children: <Widget>[
 
                         Icon(
-                          IconData(0xe828,fontFamily: 'line_icons'),
-                          color: const Color.fromRGBO(212,175,55, 1.0),
+                          IconData(0xe828, fontFamily: 'line_icons'),
+                          color: const Color.fromRGBO(212, 175, 55, 1.0),
                           size: 25,
                         ),
 
                         SizedBox(width: 10.0),
 
                         Text(
-                          "Biography",
+                          'Biography',
                           style: TextStyle(
-                            color: const Color.fromRGBO(212,175,55, 1.0),
+                            color: const Color.fromRGBO(212, 175, 55, 1.0),
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.3,
                           ),
                         ),
+
                       ],
                     ),
                   ),
@@ -242,9 +269,13 @@ class _UserInfoState extends State<UserInfo> {
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 40.0),
                 child: Text(
-                  "• The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly but gets faster each minute after you hear this signal bodeboop. A sing lap should be completed every time you hear this sound. ding Remember to run in a straight line and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark. Get ready!… Start. ding﻿",
+                  userData.viewUser.data['bio'] == '' || userData.viewUser.data['bio'] == null
+                      ? 'None'
+                      : '${userData.viewUser.data['bio']}',
                   style: TextStyle(
-                    color:  Colors.white,
+                    color: userData.viewUser.data['bio'] == '' || userData.viewUser.data['bio'] == null
+                        ? Colors.white24
+                        : Colors.white,
                     fontSize: 15.0,
                     fontStyle: FontStyle.italic,
                     letterSpacing: 0.3,
@@ -257,15 +288,15 @@ class _UserInfoState extends State<UserInfo> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget> [
+                children: <Widget>[
 
                   Container(
                     child: Row(
-                      children: <Widget> [
+                      children: <Widget>[
 
                         Icon(
-                          IconData(0xe822,fontFamily: 'line_icons'),
-                          color: const Color.fromRGBO(212,175,55, 1.0),
+                          IconData(0xe822, fontFamily: 'line_icons'),
+                          color: const Color.fromRGBO(212, 175, 55, 1.0),
                           size: 28,
                         ),
 
@@ -274,7 +305,7 @@ class _UserInfoState extends State<UserInfo> {
                         Text(
                           "Achievements",
                           style: TextStyle(
-                            color: const Color.fromRGBO(212,175,55, 1.0),
+                            color: const Color.fromRGBO(212, 175, 55, 1.0),
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.3,
@@ -293,9 +324,9 @@ class _UserInfoState extends State<UserInfo> {
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 40.0),
                 child: Text(
-                  "• Bathroom Legend - clean the women's restroom 1000 times",
+                  "",
                   style: TextStyle(
-                    color:  Colors.white,
+                    color: Colors.white,
                     fontSize: 15.0,
                     fontStyle: FontStyle.italic,
                     letterSpacing: 0.3,

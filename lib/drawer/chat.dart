@@ -5,39 +5,42 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: Image.asset(
-                'assets/amc_logo.png',
-                width: 30.0,
-                height: 30.0,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                'Chat',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40.0),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.black,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: Image.asset(
+                  'assets/amc_logo.png',
+                  width: 30.0,
+                  height: 30.0,
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  'Messages',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 22
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.black,
       ),
       endDrawer: SideDrawer(),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-          image: AssetImage('assets/background.png'),
-          fit: BoxFit.cover,
+            image: AssetImage('assets/background.png'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Center(
@@ -45,9 +48,9 @@ class ChatPage extends StatelessWidget {
             IconData(0xe83f,fontFamily: 'line_icons'),
             size: 64.0,
             color: Colors.white,
-            ),
           ),
         ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).popUntil((route) => route.isFirst);

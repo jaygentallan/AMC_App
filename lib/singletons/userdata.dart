@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserData {
   static final UserData _userData = UserData._internal();
@@ -10,6 +11,9 @@ class UserData {
   String docID = '';
   String favMovie = '';
   String bio = '';
+
+  QuerySnapshot users;
+  DocumentSnapshot viewUser;
 
   factory UserData() {
     return _userData;

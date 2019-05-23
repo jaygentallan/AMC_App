@@ -16,7 +16,7 @@ import 'package:amc/singletons/userdata.dart';
 class ProfilePage extends StatelessWidget {
   Future<void> _refresh() async
   {
-    print('refreshing');
+    print('Refreshing');
     ProfilePage();
   }
 
@@ -145,35 +145,74 @@ class UserInfo extends StatefulWidget {
 class _UserInfoState extends State<UserInfo> {
   bool init = true;
 
-  String favMovie;
-  String bio;
+  String _favMovie;
+  String _bio;
+  String _userData;
+
+  List<String> favMovieDialog = ['Favorite Movie','Enter your favorite movie', 'favMovie'];
+  List<String> bioDialog = ['Biography','Enter your bio', 'bio'];
 
   QuerySnapshot profileData;
+  UserManagement userManagement = UserManagement();
   CrudMethods crud = CrudMethods();
 
-  Future<bool> addDialog(BuildContext context) async {
+  Future<bool> addDialog(BuildContext context, List<String> data) async {
     return showDialog(
       context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context)
-    {
-      return AlertDialog(
-        title: Text('Favorite Movie', style: TextStyle(fontSize: 15)),
-        content: Center(
-          child: Container(
-            child: TextField(
-              decoration: InputDecoration(
-                  hintText: 'Enter your favorite movie'),
-              onChanged: (value) {
-                this.favMovie = value;
-              }
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(32.0))),
+          title: Center(
+            child: Text(data[0],
+              style: TextStyle(
+                color: const Color.fromRGBO(212,175,55, 1.0),
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.3,
               ),
             ),
+          ),
+          content: Container(
+            height: 50.0,
+            child: TextField(
+                decoration: InputDecoration(
+                  hintText: data[1],
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: const Color.fromRGBO(206, 38, 64, 1.0)),
+                  ),
+                ),
+                cursorColor: const Color.fromRGBO(206, 38, 64, 1.0),
+                onChanged: (value) {
+                  _userData = value;
+                }
             ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'Save',
+                style: TextStyle(
+                  color: const Color.fromRGBO(212,175,55, 1.0),
+                ),
+              ),
+              onPressed: () {
+
+                data[2] == 'favMovie'
+                ? userManagement.updateFavMovie(_userData)
+                : userManagement.updateProfileBio(_userData);
+
+                Navigator.of(context).pop();
+              },
+            )
+          ],
           );
         }
       );
     }
+
 
   @override
   Widget build(BuildContext context) {
@@ -256,7 +295,7 @@ class _UserInfoState extends State<UserInfo> {
                         splashColor: Colors.transparent,
                         child: FlatButton(
                           onPressed: () {
-                            addDialog(context);
+                            addDialog(context,favMovieDialog);
                           },
                           child: Icon(
                               IconData(0xe802,fontFamily: 'line_icons'),
@@ -277,13 +316,13 @@ class _UserInfoState extends State<UserInfo> {
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 40.0),
                 child: Text(
-                  userData.favMovie == ''
-                  ? 'Add your favorite movie!'
+                  userData.favMovie == '' || userData.favMovie == null
+                  ? 'Tell us your favorite movie!'
                   : '${userData.favMovie}',
                   style: TextStyle(
-                    color: userData.favMovie == null
-                      ? Colors.white
-                      : Colors.white24,
+                    color: userData.favMovie == '' || userData.favMovie == null
+                      ? Colors.white24
+                      : Colors.white,
                     fontSize: 15.0,
                     fontStyle: FontStyle.italic,
                     letterSpacing: 0.3,
@@ -312,13 +351,9 @@ class _UserInfoState extends State<UserInfo> {
                         SizedBox(width: 10.0),
 
                         Text(
-                          userData.favMovie == ''
-                              ? 'Add your favorite movie!'
-                              : '${userData.favMovie}',
+                          'Biography',
                           style: TextStyle(
-                            color: userData.favMovie == null
-                                ? Colors.white
-                                : Colors.white24,
+                            color: const Color.fromRGBO(212,175,55, 1.0),
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.3,
@@ -332,7 +367,7 @@ class _UserInfoState extends State<UserInfo> {
                           splashColor: Colors.transparent,
                           child: FlatButton(
                             onPressed: () {
-                              print('Button Pressed');
+                              addDialog(context, bioDialog);
                             },
                             child: Icon(
                               IconData(0xe802,fontFamily: 'line_icons'),
@@ -354,9 +389,13 @@ class _UserInfoState extends State<UserInfo> {
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 40.0),
                 child: Text(
-                  "The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly but gets faster each minute after you hear this signal bodeboop. A sing lap should be completed every time you hear this sound. ding Remember to run in a straight line and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark. Get ready!… Start. ding﻿",
+                  userData.bio == '' || userData.bio == null
+                      ? 'Tell us something about yourself!'
+                      : '${userData.bio}',
                   style: TextStyle(
-                    color:  Colors.white,
+                    color: userData.bio == '' || userData.bio == null
+                        ? Colors.white24
+                        : Colors.white,
                     fontSize: 15.0,
                     fontStyle: FontStyle.italic,
                     letterSpacing: 0.3,
@@ -405,7 +444,7 @@ class _UserInfoState extends State<UserInfo> {
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 40.0),
                 child: Text(
-                  "• Bathroom Legend - clean the women's restroom 1000 times",
+                  "",
                   style: TextStyle(
                     color:  Colors.white,
                     fontSize: 15.0,
