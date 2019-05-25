@@ -1,11 +1,8 @@
 import 'dart:ui';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:amc/main.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:amc/home/home.dart';
 import 'package:amc/animations/signupAnimation.dart';
 
 import 'package:amc/services/usermanagement.dart';
@@ -400,7 +397,6 @@ class AnimationScreen extends AnimatedWidget {
   AnimationScreen({Key key,Animation<double> animation}):super(key :key, listenable : animation);
 
   Widget build(BuildContext context) {
-    final Animation<double> animation = listenable;
     return Container(
       color: const Color.fromRGBO(206, 38, 64, 1.0),
     );

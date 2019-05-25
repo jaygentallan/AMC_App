@@ -8,73 +8,73 @@ class ViewProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(40.0),
-          child: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.black,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Image.asset(
-                    'assets/amc_logo.png',
-                    width: 30.0,
-                    height: 30.0,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    'Profile',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 22
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        body: Stack(
-          children: <Widget>[
-
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/background.png'),
-                  alignment: Alignment.bottomCenter,
-                  fit: BoxFit.cover,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40.0),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.black,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: Image.asset(
+                  'assets/amc_logo.png',
+                  width: 30.0,
+                  height: 30.0,
                 ),
               ),
-            ),
-
-            ListView(
-              children: <Widget>[
-
-                ProfilePic(),
-
-                SizedBox(height: 5.0),
-
-                UserInfo(),
-
-                SizedBox(height: 20.0),
-
-              ],
-            )
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Icon(
-            Icons.arrow_back,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  'Profile',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 22
+                  ),
+                ),
+              ),
+            ],
           ),
-          backgroundColor: const Color.fromRGBO(206, 38, 64, 1.0),
         ),
+      ),
+      body: Stack(
+        children: <Widget>[
+
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/background.png'),
+                alignment: Alignment.bottomCenter,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+
+          ListView(
+            children: <Widget>[
+
+              ProfilePic(),
+
+              SizedBox(height: 5.0),
+
+              UserInfo(),
+
+              SizedBox(height: 20.0),
+
+            ],
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        child: Icon(
+          Icons.arrow_back,
+        ),
+        backgroundColor: const Color.fromRGBO(206, 38, 64, 1.0),
+      ),
     );
   }
 }
@@ -95,18 +95,18 @@ class _ProfilePicState extends State<ProfilePic> {
         children: <Widget>[
 
           Container(
-              width: 190.0,
-              height: 190.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                  image: NetworkImage(
-                    userData.viewUser.data['profilePic'],
-                  ),
+            width: 190.0,
+            height: 190.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+                image: NetworkImage(
+                  userData.viewUser.data['profilePic'],
                 ),
               ),
+            ),
           ),
         ],
       ),
@@ -128,10 +128,7 @@ class _UserInfoState extends State<UserInfo> {
         .of(context)
         .size
         .width;
-    double _height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    //double _height = MediaQuery.of(context).size.height;
 
     return Column(
       children: <Widget>[
@@ -139,10 +136,13 @@ class _UserInfoState extends State<UserInfo> {
         // FULL NAME
         Container(
           width: _width / 1.25,
-          height: 60.0,
+          height: 85.5,
           alignment: Alignment.center,
           child: Column(
             children: <Widget>[
+
+              SizedBox(height: 10.0),
+
               Text(
                 "${userData.viewUser.data['firstName']} ${userData.viewUser.data['lastName']}",
                 style: TextStyle(
@@ -173,6 +173,16 @@ class _UserInfoState extends State<UserInfo> {
             children: <Widget>[
 
               SizedBox(height: 30.0),
+
+              Container(
+                height: 3,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(46, 5, 13, 1.0),
+                  borderRadius: BorderRadius.all(const Radius.circular(30.0)),
+                ),
+              ),
+
+              SizedBox(height: 10.0),
 
               // FAVORITE MOVIE
               Row(
@@ -208,6 +218,7 @@ class _UserInfoState extends State<UserInfo> {
                 ],
               ),
 
+              SizedBox(height: 10.0),
               // FAVORITE MOVIE OUTPUT
               Container(
                 alignment: Alignment.topLeft,
@@ -227,7 +238,17 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
 
-              SizedBox(height: 30.0),
+              SizedBox(height: 20.0),
+
+              Container(
+                height: 3,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(46, 5, 13, 1.0),
+                  borderRadius: BorderRadius.all(const Radius.circular(30.0)),
+                ),
+              ),
+
+              SizedBox(height: 10.0),
 
               // BIOGRAPHY
               Row(
@@ -263,7 +284,7 @@ class _UserInfoState extends State<UserInfo> {
                 ],
               ),
 
-              SizedBox(height: 5.0),
+              SizedBox(height: 15.0),
               // BIOGRAPHY OUTPUT
               Container(
                 alignment: Alignment.topLeft,
@@ -283,7 +304,17 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
 
-              SizedBox(height: 30.0),
+              SizedBox(height: 20.0),
+
+              Container(
+                height: 3,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(46, 5, 13, 1.0),
+                  borderRadius: BorderRadius.all(const Radius.circular(30.0)),
+                ),
+              ),
+
+              SizedBox(height: 20.0),
               // TROPHIES
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -311,6 +342,7 @@ class _UserInfoState extends State<UserInfo> {
                             letterSpacing: 0.3,
                           ),
                         ),
+
                       ],
                     ),
                   ),
@@ -334,6 +366,15 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
 
+              SizedBox(height: 100.0),
+
+              Container(
+                height: 3,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(46, 5, 13, 1.0),
+                  borderRadius: BorderRadius.all(const Radius.circular(30.0)),
+                ),
+              ),
 
             ],
           ),

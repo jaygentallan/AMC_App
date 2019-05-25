@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'dart:ui';
-import 'dart:async';
 
 import 'package:amc/home/home.dart';
 import 'package:amc/shifts/shifts.dart';
@@ -28,14 +27,14 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       //showPerformanceOverlay: true,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Roboto'),
-      home: Main(),
-      routes: <String, WidgetBuilder> {
-        '/login': (BuildContext context) => App(),
-        '/signup': (BuildContext context) => SignupPage(),
-        '/homepage': (BuildContext context) => Header(),
-      }
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'Roboto'),
+        home: Main(),
+        routes: <String, WidgetBuilder> {
+          '/login': (BuildContext context) => App(),
+          '/signup': (BuildContext context) => SignupPage(),
+          '/homepage': (BuildContext context) => Header(),
+        }
     );
   }
 }
@@ -100,26 +99,26 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
           'HOME',
           style: TextStyle(fontWeight: FontWeight.w400),)),
     BottomNavigationBarItem(
-      icon: Icon(IconData(0xe836,fontFamily: 'line_icons')),
-      title: Text(
-        'SHIFTS',
-        style: TextStyle(fontWeight: FontWeight.w400))),
+        icon: Icon(IconData(0xe836,fontFamily: 'line_icons')),
+        title: Text(
+            'SHIFTS',
+            style: TextStyle(fontWeight: FontWeight.w400))),
     BottomNavigationBarItem(
-      icon: Icon(IconData(0xe82b,fontFamily: 'line_icons')),
-      title: Text(
-        'SOCIAL',
-        style: TextStyle(fontWeight: FontWeight.w400))),
+        icon: Icon(IconData(0xe82b,fontFamily: 'line_icons')),
+        title: Text(
+            'SOCIAL',
+            style: TextStyle(fontWeight: FontWeight.w400))),
     BottomNavigationBarItem(
-      icon: Icon(IconData(0xe82a,fontFamily: 'line_icons')),
-      title: Text(
-        'PROFILE',
-        style: TextStyle(fontWeight: FontWeight.w400))),
+        icon: Icon(IconData(0xe82a,fontFamily: 'line_icons')),
+        title: Text(
+            'PROFILE',
+            style: TextStyle(fontWeight: FontWeight.w400))),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> _loginFormKey =
-    new GlobalKey<FormState>(debugLabel: '_loginFormKey');
+    //final GlobalKey<FormState> _loginFormKey =
+    //new GlobalKey<FormState>(debugLabel: '_loginFormKey');
     return Stack(
       children: <Widget>[
 
@@ -180,26 +179,28 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
                     init = false;
 
                   });
+                  // Get document reference and put to singleton
+                  crud.getUsers().then((results) {
+                    userData.users = results;
+                  });
+
+                  // Get posts reference and put to singleton
+                  crud.getCrewPosts().then((results) {
+                    userData.posts = results;
+                  });
+
                 });
 
-                // Get document reference and put to singleton
-                crud.getData().then((results) {
-                  userData.users = results;
-                });
-
-              } else {
-                return Container(width: 0.0, height: 0.0);
               }
-            } else {
-              return Container(width: 0.0, height: 0.0);
             }
+            return Container(height: 0.0, width: 0.0);
           },
         )
             : Container(width: 0.0, height: 0.0),
 
         // UI Scaffold
         Scaffold(
-          key: _loginFormKey,
+          //key: _loginFormKey,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(40.0),
             child: AppBar(
@@ -216,34 +217,34 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child:
-                    // Changes header depending on page
-                    _currentIndex == 0
-                      ? Text(
-                        'Home',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 22))
-                      : _currentIndex == 1
-                        ? Text(
-                          'Shifts',
-                            style: TextStyle(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child:
+                      // Changes header depending on page
+                      _currentIndex == 0
+                          ? Text(
+                          'Home',
+                          style: TextStyle(
                               fontWeight: FontWeight.w800,
                               fontSize: 22))
-                        : _currentIndex == 2
+                          : _currentIndex == 1
                           ? Text(
-                            'Social',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 22))
+                          'Shifts',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 22))
+                          : _currentIndex == 2
+                          ? Text(
+                          'Social',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 22))
                           : _currentIndex == 3
-                            ? Text(
-                              'Profile',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 22))
-                            : Container(width: 0.0,height: 0.0)
+                          ? Text(
+                          'Profile',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 22))
+                          : Container(width: 0.0,height: 0.0)
                   ),
                 ],
               ),
@@ -304,80 +305,80 @@ class SideDrawer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ListTile(
-              leading: Icon(
-                IconData(0xe843,fontFamily: 'line_icons'),
-                color: Colors.white,
-              ),
-              title: Text(
-                'Stats',
-                style: TextStyle(
+                leading: Icon(
+                  IconData(0xe843,fontFamily: 'line_icons'),
                   color: Colors.white,
                 ),
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => StatsPage())
-                );
-              }
+                title: Text(
+                  'Stats',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => StatsPage())
+                  );
+                }
             ),
             ListTile(
-              leading: Icon(
-                IconData(0xe83f,fontFamily: 'line_icons'),
-                color: Colors.white,
-              ),
-              title: Text(
-                'Messages',
-                style: TextStyle(
+                leading: Icon(
+                  IconData(0xe83f,fontFamily: 'line_icons'),
                   color: Colors.white,
                 ),
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChatPage())
-                );
-              }
+                title: Text(
+                  'Messages',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChatPage())
+                  );
+                }
             ),
             ListTile(
-              leading: Icon(
-                IconData(0xe858,fontFamily: 'line_icons'),
-                color: Colors.white,
-              ),
-              title: Text(
-                'Notifications',
-                style: TextStyle(
+                leading: Icon(
+                  IconData(0xe858,fontFamily: 'line_icons'),
                   color: Colors.white,
                 ),
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => NotifsPage())
-                );
-              }
+                title: Text(
+                  'Notifications',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => NotifsPage())
+                  );
+                }
             ),
             ListTile(
-              leading: Icon(
-                IconData(0xe810,fontFamily: 'line_icons'),
-                color: Colors.white,
-              ),
-              title: Text(
-                'Settings',
-                style: TextStyle(
+                leading: Icon(
+                  IconData(0xe810,fontFamily: 'line_icons'),
                   color: Colors.white,
                 ),
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SettingsPage())
-                );
-              }
+                title: Text(
+                  'Settings',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingsPage())
+                  );
+                }
             ),
             ListTile(
                 leading: Icon(
@@ -392,10 +393,10 @@ class SideDrawer extends StatelessWidget {
                 ),
                 onTap: () {
                   FirebaseAuth.instance.signOut()
-                    .then((value) {
-                      Navigator.of(context).pushReplacementNamed('/login'); })
-                    .catchError((e) {
-                      print(e);});
+                      .then((value) {
+                    Navigator.of(context).pushReplacementNamed('/login'); })
+                      .catchError((e) {
+                    print(e);});
                 }
             ),
           ],
@@ -417,10 +418,10 @@ class HomeAnimation extends AnimatedWidget {
 
     final Animation<double> animation = listenable;
     return animation.value != 0.0
-    ? Opacity(
+        ? Opacity(
       opacity: animation.value > 0.4
-        ? 1.0
-        : animation.value * 2.5,
+          ? 1.0
+          : animation.value * 2.5,
       child: Container(
         width: _width,
         height: _height,
@@ -435,17 +436,17 @@ class HomeAnimation extends AnimatedWidget {
           child: Center(
             child: Text("Hello, ${name}!",
               style: TextStyle(fontSize: 25,color:
-                  animation.value > 0.8
+              animation.value > 0.8
                   ? Colors.white.withOpacity(0.0)
                   : animation.value > 0.4
-                    ? Colors.white
-                    : Colors.white.withOpacity(animation.value * 2.5),
+                  ? Colors.white
+                  : Colors.white.withOpacity(animation.value * 2.5),
               ),
             ),
           ),
         ),
       ),
     )
-    : Container(width: 0.0, height: 0.0);
+        : Container(width: 0.0, height: 0.0);
   }
 }

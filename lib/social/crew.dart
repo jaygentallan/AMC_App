@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:amc/main.dart';
 import 'package:amc/services/crud.dart';
 import 'package:amc/singletons/userdata.dart';
 import 'package:amc/profile/viewprofile.dart';
@@ -98,45 +97,60 @@ class _CrewListState extends State<CrewList> {
             itemCount: userData.users.documents.length,
             padding: const EdgeInsets.all(5.0),
             itemBuilder: (context, i) {
-              return Container(
-                margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                height: 55.0,
-                alignment: FractionalOffset.center,
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color.fromRGBO(132, 26, 42, 1.0),
-                        offset: Offset(0.0,6.0),
-                      ),
-                    ],
-                    color: const Color.fromRGBO(206, 38, 64, 1.0),
-                    borderRadius: BorderRadius.all(const Radius.circular(32.0))),
-                child: FlatButton(
-                  onPressed: () {
-                    userData.viewUser = userData.users.documents[i];
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ViewProfilePage()));
-                    },
-                  child: ListTile(
-                    // USER PROFILE PIC
-                    leading: CircleAvatar(
-                      radius: 23,
-                      backgroundImage: NetworkImage(
-                          userData.users.documents[i].data['profilePic'],
+              return Column(
+                children: <Widget> [
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 3.0),
+                    height: 55.0,
+                    alignment: FractionalOffset.center,
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        //borderRadius: BorderRadius.all(const Radius.circular(32.0))
+                    ),
+                    child: FlatButton(
+                      onPressed: () {
+                        userData.viewUser = userData.users.documents[i];
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ViewProfilePage()));
+                        },
+                      child: ListTile(
+                        // USER PROFILE PIC
+                        leading: CircleAvatar(
+                          radius: 23,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: NetworkImage(
+                              userData.users.documents[i].data['profilePic'],
+                              ),
+                            ),
+                        // USER FULL NAME
+                        title: Text(
+                          "${userData.users.documents[i].data['firstName']} ${userData.users.documents[i].data['lastName']}",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.w300,
                           ),
                         ),
-                    // USER FULL NAME
-                    title: Text(
-                      "${userData.users.documents[i].data['firstName']} ${userData.users.documents[i].data['lastName']}",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w300,
-                      ),
+                        // ARROW BUTTON
+                        trailing: Icon(
+                          Icons.keyboard_arrow_right,
+                          color: Colors.white,
+                        ),
+                      )
                     ),
-                  )
-                ),
+                  ),
+
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    height: 3,
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(46, 5, 13, 1.0),
+                      borderRadius: BorderRadius.all(const Radius.circular(30.0)),
+                    ),
+                  ),
+
+                ],
               );
           },
         ),
@@ -146,7 +160,7 @@ class _CrewListState extends State<CrewList> {
         'Loading...',
         style: TextStyle(
           color: Colors.white,
-          fontSize: 15.0,
+          fontSize: 18.0,
           fontWeight: FontWeight.w300,
         ),
       );

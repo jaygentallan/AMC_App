@@ -12,7 +12,13 @@ class UserData {
   String favMovie = '';
   String bio = '';
 
+  String date = '';
+  String post = '';
+
+  int postIndex;
+
   QuerySnapshot users;
+  QuerySnapshot posts;
   DocumentSnapshot viewUser;
 
   factory UserData() {

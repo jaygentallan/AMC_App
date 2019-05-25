@@ -5,11 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:amc/services/usermanagement.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:amc/services/crud.dart';
-import 'package:amc/services/usermanagement.dart';
 
 import 'package:amc/singletons/userdata.dart';
 
@@ -23,38 +21,38 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-        children: <Widget>[
+      children: <Widget>[
 
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/background.png'),
-                alignment: Alignment.bottomCenter,
-                fit: BoxFit.cover,
-              ),
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/background.png'),
+              alignment: Alignment.bottomCenter,
+              fit: BoxFit.cover,
             ),
           ),
+        ),
 
-          RefreshIndicator(
-            backgroundColor: const Color.fromRGBO(206, 38, 64, 1.0),
-            color: Colors.white,
-            onRefresh: _refresh,
-            child: ListView(
-              children: <Widget>[
-                SizedBox(height: 25.0),
+        RefreshIndicator(
+          backgroundColor: const Color.fromRGBO(206, 38, 64, 1.0),
+          color: Colors.white,
+          onRefresh: _refresh,
+          child: ListView(
+            children: <Widget>[
+              SizedBox(height: 25.0),
 
-                ProfilePic(),
+              ProfilePic(),
 
-                SizedBox(height: 5.0),
+              SizedBox(height: 5.0),
 
-                UserInfo(),
+              UserInfo(),
 
-                SizedBox(height: 20.0),
+              SizedBox(height: 20.0),
 
-              ],
-            ),
+            ],
           ),
-        ],
+        ),
+      ],
     );
   }
 }
@@ -92,7 +90,7 @@ class _ProfilePicState extends State<ProfilePic> {
   uploadImage() async {
 
     final StorageReference firebaseStorageRef =
-      FirebaseStorage.instance.ref().child('profilepics/${userData.uid}.jpg');
+    FirebaseStorage.instance.ref().child('profilepics/${userData.uid}.jpg');
     StorageUploadTask task = firebaseStorageRef.putFile(newProfilePic);
 
     var downurl = await (await task.onComplete).ref.getDownloadURL();
@@ -112,24 +110,28 @@ class _ProfilePicState extends State<ProfilePic> {
         children: <Widget>[
 
           Container(
-            width: 190.0,
-            height: 190.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
-                image: NetworkImage(
-                  userData.profilePic,
+              width: 190.0,
+              height: 190.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                /*border: Border.all(
+                width: 5.0,
+                color: const Color.fromRGBO(206, 38, 64, 1.0),
+              ), */
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  image: NetworkImage(
+                    userData.profilePic,
+                  ),
                 ),
               ),
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: GestureDetector(
-                onTap: getImage,
+              child: Material(
+                  color: Colors.transparent,
+                  child: GestureDetector(
+                    onTap: getImage,
+                  )
               )
-            )
           ),
         ],
       ),
@@ -145,8 +147,6 @@ class UserInfo extends StatefulWidget {
 class _UserInfoState extends State<UserInfo> {
   bool init = true;
 
-  String _favMovie;
-  String _bio;
   String _userData;
 
   List<String> favMovieDialog = ['Favorite Movie','Enter your favorite movie', 'favMovie'];
@@ -158,66 +158,66 @@ class _UserInfoState extends State<UserInfo> {
 
   Future<bool> addDialog(BuildContext context, List<String> data) async {
     return showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(32.0))),
-          title: Center(
-            child: Text(data[0],
-              style: TextStyle(
-                color: const Color.fromRGBO(212,175,55, 1.0),
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.3,
-              ),
-            ),
-          ),
-          content: Container(
-            height: 50.0,
-            child: TextField(
-                decoration: InputDecoration(
-                  hintText: data[1],
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: const Color.fromRGBO(206, 38, 64, 1.0)),
-                  ),
-                ),
-                cursorColor: const Color.fromRGBO(206, 38, 64, 1.0),
-                onChanged: (value) {
-                  _userData = value;
-                }
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(
-                'Save',
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+            title: Center(
+              child: Text(data[0],
                 style: TextStyle(
                   color: const Color.fromRGBO(212,175,55, 1.0),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.3,
                 ),
               ),
-              onPressed: () {
+            ),
+            content: Container(
+              height: 50.0,
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: data[1],
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: const Color.fromRGBO(206, 38, 64, 1.0)),
+                    ),
+                  ),
+                  cursorColor: const Color.fromRGBO(206, 38, 64, 1.0),
+                  onChanged: (value) {
+                    _userData = value;
+                  }
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'Save',
+                  style: TextStyle(
+                    color: const Color.fromRGBO(212,175,55, 1.0),
+                  ),
+                ),
+                onPressed: () {
 
-                data[2] == 'favMovie'
-                ? userManagement.updateFavMovie(_userData)
-                : userManagement.updateProfileBio(_userData);
+                  data[2] == 'favMovie'
+                      ? userManagement.updateFavMovie(_userData)
+                      : userManagement.updateProfileBio(_userData);
 
-                Navigator.of(context).pop();
-              },
-            )
-          ],
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
           );
         }
-      );
-    }
+    );
+  }
 
 
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    //double _height = MediaQuery.of(context).size.height;
 
     return Column(
       children: <Widget> [
@@ -225,10 +225,13 @@ class _UserInfoState extends State<UserInfo> {
         // FULL NAME
         Container(
           width: _width / 1.25,
-          height: 60.0,
+          height: 85.5,
           alignment: Alignment.center,
           child: Column(
             children: <Widget> [
+
+              SizedBox(height: 10.0),
+
               Text(
                 "${userData.firstName} ${userData.lastName}",
                 style: TextStyle(
@@ -248,6 +251,7 @@ class _UserInfoState extends State<UserInfo> {
                   letterSpacing: 0.3,
                 ),
               ),
+
             ],
           ),
         ),
@@ -260,6 +264,13 @@ class _UserInfoState extends State<UserInfo> {
 
               SizedBox(height: 30.0),
 
+              Container(
+                height: 3,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(46, 5, 13, 1.0),
+                  borderRadius: BorderRadius.all(const Radius.circular(30.0)),
+                ),
+              ),
               // FAVORITE MOVIE
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -270,34 +281,34 @@ class _UserInfoState extends State<UserInfo> {
                     child: Row(
                       children: <Widget> [
 
-                      Icon(
-                        IconData(0xe824,fontFamily: 'line_icons'),
-                        color: const Color.fromRGBO(212,175,55, 1.0),
-                        size: 28,
-                      ),
-
-                      SizedBox(width: 10.0),
-
-                      Text(
-                        "Favorite Movie",
-                        style: TextStyle(
+                        Icon(
+                          IconData(0xe824,fontFamily: 'line_icons'),
                           color: const Color.fromRGBO(212,175,55, 1.0),
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.3,
+                          size: 28,
                         ),
-                      ),
 
-                      // EDIT BUTTON
-                      ButtonTheme(
-                        minWidth: 10,
-                        height: 20,
-                        splashColor: Colors.transparent,
-                        child: FlatButton(
-                          onPressed: () {
-                            addDialog(context,favMovieDialog);
-                          },
-                          child: Icon(
+                        SizedBox(width: 10.0),
+
+                        Text(
+                          "Favorite Movie",
+                          style: TextStyle(
+                            color: const Color.fromRGBO(212,175,55, 1.0),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+
+                        // EDIT BUTTON
+                        ButtonTheme(
+                          minWidth: 10,
+                          height: 20,
+                          splashColor: Colors.transparent,
+                          child: FlatButton(
+                            onPressed: () {
+                              addDialog(context,favMovieDialog);
+                            },
+                            child: Icon(
                               IconData(0xe802,fontFamily: 'line_icons'),
                               color: Colors.white24,
                               size: 20,
@@ -317,12 +328,12 @@ class _UserInfoState extends State<UserInfo> {
                 margin: const EdgeInsets.only(left: 40.0),
                 child: Text(
                   userData.favMovie == '' || userData.favMovie == null
-                  ? 'Tell us your favorite movie!'
-                  : '${userData.favMovie}',
+                      ? 'Tell us your favorite movie!'
+                      : '${userData.favMovie}',
                   style: TextStyle(
                     color: userData.favMovie == '' || userData.favMovie == null
-                      ? Colors.white24
-                      : Colors.white,
+                        ? Colors.white24
+                        : Colors.white,
                     fontSize: 15.0,
                     fontStyle: FontStyle.italic,
                     letterSpacing: 0.3,
@@ -330,7 +341,17 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
 
-              SizedBox(height: 30.0),
+              SizedBox(height: 20.0),
+
+              Container(
+                height: 3,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(46, 5, 13, 1.0),
+                  borderRadius: BorderRadius.all(const Radius.circular(30.0)),
+                ),
+              ),
+
+              SizedBox(height: 10.0),
 
               // BIOGRAPHY
               Row(
@@ -403,7 +424,17 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
 
-              SizedBox(height: 30.0),
+              SizedBox(height: 20.0),
+
+              Container(
+                height: 3,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(46, 5, 13, 1.0),
+                  borderRadius: BorderRadius.all(const Radius.circular(30.0)),
+                ),
+              ),
+
+              SizedBox(height: 20.0),
               // TROPHIES
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -451,6 +482,16 @@ class _UserInfoState extends State<UserInfo> {
                     fontStyle: FontStyle.italic,
                     letterSpacing: 0.3,
                   ),
+                ),
+              ),
+
+              SizedBox(height: 100.0),
+
+              Container(
+                height: 3,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(46, 5, 13, 1.0),
+                  borderRadius: BorderRadius.all(const Radius.circular(30.0)),
                 ),
               ),
 

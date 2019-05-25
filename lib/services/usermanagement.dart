@@ -49,6 +49,21 @@ class UserManagement {
     }); */
   }
 
+  storeNewPost(data, context) {
+    Firestore.instance.collection('posts').document('crew').collection('posts')
+        .add({
+      'firstName': data[0],
+      'lastName': data[1],
+      'profilePic': data[2],
+      'post': data[3],
+      'uid': data[4],
+      'date': data[5],
+    })
+        .then((value) {
+    })
+        .catchError((e) { print(e); });
+  }
+
   updateProfilePic(picUrl) {
     userData.profilePic = picUrl;
     var userInfo = UserUpdateInfo();

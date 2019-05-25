@@ -2,11 +2,9 @@ import 'dart:ui';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
-import 'package:flutter/scheduler.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:amc/home/home.dart';
 import 'package:amc/animations/loginAnimation.dart';
 
 class LoginPage extends StatefulWidget {
@@ -65,11 +63,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               ),
             ),
             child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 2.5,sigmaY: 2.5),
-                child: Container(
-                  decoration: BoxDecoration(color: Colors.black.withOpacity(0.1)),
-                ),
+              filter: ImageFilter.blur(sigmaX: 2.5,sigmaY: 2.5),
+              child: Container(
+                decoration: BoxDecoration(color: Colors.black.withOpacity(0.1)),
               ),
+            ),
           ),
 
           Container(
@@ -123,9 +121,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   ),
                                 ),
 
-                                ],
-                              ),
+                              ],
                             ),
+                          ),
 
                           SizedBox(height: 50.0),
 
@@ -203,36 +201,36 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 ),
               ],
             ),
-            ),
+          ),
 
-            Container(
-              width: _width,
-              height: _height,
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: <Widget>[
-                  // SIGNUP BUTTON
-                  FlatButton(
-                    child: Text(
-                      "Don't have an account? Sign up here",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.3,
-                      ),
+          Container(
+            width: _width,
+            height: _height,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: <Widget>[
+                // SIGNUP BUTTON
+                FlatButton(
+                  child: Text(
+                    "Don't have an account? Sign up here",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 0.3,
                     ),
-                    onPressed: () {
-                      errorCredentials = 0;
-                      Navigator.of(context).pushNamed('/signup');
-                    },
                   ),
+                  onPressed: () {
+                    errorCredentials = 0;
+                    Navigator.of(context).pushNamed('/signup');
+                  },
+                ),
 
-                  // LOGIN BUTTON
-                  statusClick == 0 // Condition statement if button is clicked
+                // LOGIN BUTTON
+                statusClick == 0 // Condition statement if button is clicked
                     ? Padding(
-                      padding: const EdgeInsets.only(bottom: 50.0),
-                      child: InkWell(
+                    padding: const EdgeInsets.only(bottom: 50.0),
+                    child: InkWell(
                         onTap: () async {
                           setState(() {
                             statusClick = 1;
@@ -256,18 +254,18 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                           );
                         },
                         child: LoginButton()
-                      )
                     )
+                )
                     : StartAnimation(
-                        buttonController: animationControllerButton.view,),
+                  buttonController: animationControllerButton.view,),
 
-                  SizedBox(height: 10.0),
-                ],
-              ),
+                SizedBox(height: 10.0),
+              ],
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -328,7 +326,6 @@ class AnimationScreen extends AnimatedWidget {
   AnimationScreen({Key key,Animation<double> animation}):super(key :key, listenable : animation);
 
   Widget build(BuildContext context) {
-    final Animation<double> animation = listenable;
     return Container(
       color: const Color.fromRGBO(206, 38, 64, 1.0),
     );

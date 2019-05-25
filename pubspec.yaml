@@ -23,6 +23,7 @@ dependencies:
   firebase_storage:
   firebase_database:
   frideos: ^0.6.2
+  intl:
 
   flutter:
     sdk: flutter
@@ -70,6 +71,9 @@ flutter:
     - family: line_icons
       fonts:
         - asset: assets/icons/line_icons.ttf
+    - family: delete
+      fonts:
+        - asset: assets/icons/delete.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:amc/main.dart';
-import 'package:amc/login/login.dart';
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();

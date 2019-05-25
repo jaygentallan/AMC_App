@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:amc/singletons/userdata.dart';
 
 class CrudMethods {
 
@@ -11,26 +10,51 @@ class CrudMethods {
     else { return false; }
   }
 
-  Future<void> addData(data,name) async {
-    Firestore.instance.collection(name).add(data).catchError((e) { print(e); }
-    );
-  }
-
-  Future<void> addProfileData(data,path,uid) async {
-    Firestore.instance.collection(path).document('${uid}').updateData(data).catchError((e) { print(e); }
-    );
-  }
-
-  getData() async {
+  getUsers() async {
     return await Firestore.instance.collection('users').getDocuments();
   }
 
+  Future getCrewPosts() async {
+    return await Firestore.instance
+        .collection('posts')
+        .document('crew')
+        .collection('posts')
+        .getDocuments();
+  }
+
+  Future getCrewPost(user) async {
+    return await Firestore.instance
+        .collection('posts')
+        .document('crew')
+        .collection('posts')
+        .where('post', isEqualTo: user.post);
+  }
+
   getProfileData(user) async {
-    return await Firestore.instance.collection('users').where('uid', isEqualTo: user.uid).getDocuments();
+    return await Firestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: user.uid)
+        .getDocuments();
   }
 
   updateData(selectedDoc, value) {
-    Firestore.instance.collection('users').document(selectedDoc).updateData(value).catchError((e) { print(e); });
+    Firestore.instance
+        .collection('users')
+        .document(selectedDoc)
+        .updateData(value)
+        .catchError((e) {
+          print(e); });
   }
 
+  deleteCrewPost(docID) {
+    Firestore.instance
+        .collection('posts')
+        .document('crew')
+        .collection('posts')
+        .document(docID)
+        .delete()
+        .catchError((e) {
+          print(e);
+        });
+  }
 }
