@@ -264,13 +264,6 @@ class _UserInfoState extends State<UserInfo> {
 
               SizedBox(height: 30.0),
 
-              Container(
-                height: 3,
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(46, 5, 13, 1.0),
-                  borderRadius: BorderRadius.all(const Radius.circular(30.0)),
-                ),
-              ),
               // FAVORITE MOVIE
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -341,17 +334,7 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
 
-              SizedBox(height: 20.0),
-
-              Container(
-                height: 3,
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(46, 5, 13, 1.0),
-                  borderRadius: BorderRadius.all(const Radius.circular(30.0)),
-                ),
-              ),
-
-              SizedBox(height: 10.0),
+              SizedBox(height: 30.0),
 
               // BIOGRAPHY
               Row(
@@ -424,17 +407,8 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
 
-              SizedBox(height: 20.0),
+              SizedBox(height: 40.0),
 
-              Container(
-                height: 3,
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(46, 5, 13, 1.0),
-                  borderRadius: BorderRadius.all(const Radius.circular(30.0)),
-                ),
-              ),
-
-              SizedBox(height: 20.0),
               // TROPHIES
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -486,14 +460,6 @@ class _UserInfoState extends State<UserInfo> {
               ),
 
               SizedBox(height: 100.0),
-
-              Container(
-                height: 3,
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(46, 5, 13, 1.0),
-                  borderRadius: BorderRadius.all(const Radius.circular(30.0)),
-                ),
-              ),
 
 
             ],

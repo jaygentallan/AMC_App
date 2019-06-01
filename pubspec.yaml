@@ -56,6 +56,12 @@ flutter:
     - assets/theatre_blinds.jpg
     - assets/background.png
 
+      # ICONs PNG
+    - assets/icons/popcorn.png
+    - assets/icons/crying.png
+    - assets/icons/laugh.png
+    - assets/icons/heart.png
+
   fonts:
     - family: AMC
       fonts:

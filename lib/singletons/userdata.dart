@@ -15,10 +15,9 @@ class UserData {
   String date = '';
   String post = '';
 
-  int postIndex;
-
   QuerySnapshot users;
-  QuerySnapshot posts;
+  Stream posts;
+  DocumentReference postRef;
   DocumentSnapshot viewUser;
 
   factory UserData() {

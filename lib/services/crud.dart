@@ -19,7 +19,7 @@ class CrudMethods {
         .collection('posts')
         .document('crew')
         .collection('posts')
-        .getDocuments();
+        .snapshots();
   }
 
   Future getCrewPost(user) async {
@@ -46,6 +46,16 @@ class CrudMethods {
           print(e); });
   }
 
+  Future<void> addPost(value) async {
+    Firestore.instance
+        .collection('posts')
+        .document('crew')
+        .collection('posts')
+        .add(value)
+        .catchError((e) {
+      print(e); });
+  }
+  
   deleteCrewPost(docID) {
     Firestore.instance
         .collection('posts')
