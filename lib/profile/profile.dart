@@ -39,6 +39,7 @@ class ProfilePage extends StatelessWidget {
           onRefresh: _refresh,
           child: ListView(
             children: <Widget>[
+
               SizedBox(height: 25.0),
 
               ProfilePic(),
@@ -104,20 +105,85 @@ class _ProfilePicState extends State<ProfilePic> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
         children: <Widget>[
 
+          // Golden line decoration behind profile picture
           Container(
+            margin: const EdgeInsets.symmetric(horizontal: 25.0),
+            height: 190.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget> [
+
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 65.0),
+                  height: 10.0,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(250,205,85, 0.75),
+                    borderRadius: BorderRadius.vertical(top: const Radius.circular(40.0)),
+                  ),
+                ),
+
+                SizedBox(height: 5.0),
+
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 35.0),
+                  height: 10.0,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(250,205,85, 0.75),
+                    borderRadius: BorderRadius.vertical(top: const Radius.circular(40.0)),
+                  ),
+                ),
+
+                SizedBox(height: 5.0),
+
+                Container(
+                  height: 20.0,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(250,205,85, 0.75),
+                    borderRadius: BorderRadius.all(const Radius.circular(40.0)),
+                  ),
+                ),
+
+                SizedBox(height: 5.0),
+
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 35.0),
+                  height: 10.0,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(250,205,85, 0.75),
+                    borderRadius: BorderRadius.vertical(bottom: const Radius.circular(40.0)),
+                  ),
+                ),
+
+                SizedBox(height: 5.0),
+
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 65.0),
+                  height: 10.0,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(250,205,85, 0.75),
+                    borderRadius: BorderRadius.vertical(bottom: const Radius.circular(40.0)),
+                  ),
+                ),
+
+              ],
+            ),
+          ),
+
+          Align(
+            child: Container(
               width: 190.0,
               height: 190.0,
               decoration: BoxDecoration(
+                color: const Color.fromRGBO(250,205,85, 1.0),
                 shape: BoxShape.circle,
-                /*border: Border.all(
-                width: 5.0,
-                color: const Color.fromRGBO(206, 38, 64, 1.0),
-              ), */
+                border: Border.all(
+                  width: 5.0,
+                  color: const Color.fromRGBO(250,205,85, 0.75),
+                ),
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   alignment: Alignment.center,
@@ -127,12 +193,14 @@ class _ProfilePicState extends State<ProfilePic> {
                 ),
               ),
               child: Material(
-                  color: Colors.transparent,
-                  child: GestureDetector(
-                    onTap: getImage,
-                  )
-              )
+                color: Colors.transparent,
+                child: GestureDetector(
+                  onTap: getImage,
+                ),
+              ),
+            ),
           ),
+
         ],
       ),
     );
@@ -242,27 +310,67 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
 
-              Text(
-                "AMC Employee",
-                style: TextStyle(
-                  color: Colors.white24,
-                  fontSize: 15.0,
-                  fontStyle: FontStyle.italic,
-                  letterSpacing: 0.3,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget> [
+
+                  // Golden line decoration
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                    width: 50.0,
+                    height: 10.0,
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(250,205,85, 0.75),
+                      borderRadius: BorderRadius.only(bottomLeft: const Radius.circular(40.0)),
+                    ),
+                  ),
+
+                  Text(
+                    "AMC Employee",
+                    style: TextStyle(
+                      color: const Color.fromRGBO(250,205,85, 1.0),
+                      fontSize: 15.0,
+                      fontStyle: FontStyle.italic,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+
+                  // Golden line decoration
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                    width: 50.0,
+                    height: 10.0,
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(250,205,85, 0.75),
+                      borderRadius: BorderRadius.only(bottomRight: const Radius.circular(40.0)),
+                    ),
+                  ),
+
+                ],
               ),
 
             ],
           ),
         ),
 
+        SizedBox(height: 20.0),
+
         Container(
-          width: 350.0,
-          alignment: Alignment.center,
+          margin: const EdgeInsets.symmetric(horizontal: 25.0),
+          alignment: FractionalOffset.center,
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: const Color.fromRGBO(132, 26, 42, 1.0),
+                  offset: Offset(0.0, 5.0),
+                ),
+              ],
+              color: const Color.fromRGBO(206, 38, 64, 1.0),
+              borderRadius: BorderRadius.all(const Radius.circular(10.0))),
           child: Column(
             children: <Widget>[
 
-              SizedBox(height: 30.0),
+              SizedBox(height: 10.0),
 
               // FAVORITE MOVIE
               Row(
@@ -270,13 +378,17 @@ class _UserInfoState extends State<UserInfo> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget> [
 
+                  // Used as padding
+                  SizedBox(width: 30.0),
+
+                  // Container for the Favorite Movie label
                   Container(
                     child: Row(
                       children: <Widget> [
 
                         Icon(
                           IconData(0xe824,fontFamily: 'line_icons'),
-                          color: const Color.fromRGBO(212,175,55, 1.0),
+                          color: const Color.fromRGBO(250,205,85, 1.0),
                           size: 28,
                         ),
 
@@ -285,7 +397,7 @@ class _UserInfoState extends State<UserInfo> {
                         Text(
                           "Favorite Movie",
                           style: TextStyle(
-                            color: const Color.fromRGBO(212,175,55, 1.0),
+                            color: const Color.fromRGBO(250,205,85, 1.0),
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.3,
@@ -318,7 +430,7 @@ class _UserInfoState extends State<UserInfo> {
               // FAVORITE MOVIE OUTPUT
               Container(
                 alignment: Alignment.topLeft,
-                margin: const EdgeInsets.only(left: 40.0),
+                margin: const EdgeInsets.only(left: 67.0,right: 20.0),
                 child: Text(
                   userData.favMovie == '' || userData.favMovie == null
                       ? 'Tell us your favorite movie!'
@@ -334,7 +446,18 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
 
-              SizedBox(height: 30.0),
+              // Used as padding
+              SizedBox(height: 20.0),
+
+              // Border to separate section
+              Container(
+                height: 2.5,
+                alignment: FractionalOffset.center,
+                color: Color.fromRGBO(193, 34, 59, 1.0),
+              ),
+
+              // Used as padding
+              SizedBox(height: 10.0),
 
               // BIOGRAPHY
               Row(
@@ -342,13 +465,17 @@ class _UserInfoState extends State<UserInfo> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget> [
 
+                  // Used as padding
+                  SizedBox(width: 30.0),
+
+                  // Container for Biography label
                   Container(
                     child: Row(
                       children: <Widget> [
 
                         Icon(
                           IconData(0xe828,fontFamily: 'line_icons'),
-                          color: const Color.fromRGBO(212,175,55, 1.0),
+                          color: const Color.fromRGBO(250,205,85, 1.0),
                           size: 25,
                         ),
 
@@ -357,7 +484,7 @@ class _UserInfoState extends State<UserInfo> {
                         Text(
                           'Biography',
                           style: TextStyle(
-                            color: const Color.fromRGBO(212,175,55, 1.0),
+                            color: const Color.fromRGBO(250,205,85, 1.0),
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.3,
@@ -391,7 +518,7 @@ class _UserInfoState extends State<UserInfo> {
               // BIOGRAPHY OUTPUT
               Container(
                 alignment: Alignment.topLeft,
-                margin: const EdgeInsets.only(left: 40.0),
+                margin: const EdgeInsets.only(left: 67.0,right: 20.0),
                 child: Text(
                   userData.bio == '' || userData.bio == null
                       ? 'Tell us something about yourself!'
@@ -407,21 +534,36 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
 
-              SizedBox(height: 40.0),
+              // Used as padding
+              SizedBox(height: 20.0),
 
-              // TROPHIES
+              // Border to separate section
+              Container(
+                height: 2.5,
+                alignment: FractionalOffset.center,
+                color: Color.fromRGBO(193, 34, 59, 1.0),
+              ),
+
+              // Used as padding
+              SizedBox(height: 20.0),
+
+              // ACHIEVEMENTS
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget> [
 
+                  // Used as padding
+                  SizedBox(width: 30.0),
+
+                  // Container for Achievements
                   Container(
                     child: Row(
                       children: <Widget> [
 
                         Icon(
                           IconData(0xe822,fontFamily: 'line_icons'),
-                          color: const Color.fromRGBO(212,175,55, 1.0),
+                          color: const Color.fromRGBO(250,205,85, 1.0),
                           size: 28,
                         ),
 
@@ -430,7 +572,7 @@ class _UserInfoState extends State<UserInfo> {
                         Text(
                           "Achievements",
                           style: TextStyle(
-                            color: const Color.fromRGBO(212,175,55, 1.0),
+                            color: const Color.fromRGBO(250,205,85, 1.0),
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.3,
@@ -439,12 +581,13 @@ class _UserInfoState extends State<UserInfo> {
                       ],
                     ),
                   ),
+
                 ],
               ),
 
               SizedBox(height: 5.0),
 
-              // FAVORITE MOVIE OUTPUT
+              // ACHIEVEMENT OUTPUT
               Container(
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 40.0),
@@ -459,7 +602,7 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
 
-              SizedBox(height: 100.0),
+              SizedBox(height: 75.0),
 
 
             ],

@@ -20,6 +20,9 @@ class _CrewState extends State<Crew> {
   final TextEditingController eCtrl = TextEditingController();
   Stream posts;
 
+  // Changes the post category depending on number
+  int currPostCategory = 0;
+
   Future<void> _refresh() async
   {
     print('Refreshing');
@@ -166,6 +169,10 @@ class _CrewState extends State<Crew> {
         posts = results;
       });
     });
+
+    setState(() {
+      currPostCategory = 0;
+    });
   }
 
   @override
@@ -189,7 +196,7 @@ class _CrewState extends State<Crew> {
             // Meet Your Crew Button
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 100.0),
-              height: 40.0,
+              height: 35.0,
               alignment: FractionalOffset.center,
               decoration: BoxDecoration(
                   boxShadow: [
@@ -199,7 +206,7 @@ class _CrewState extends State<Crew> {
                     ),
                   ],
                   color: const Color.fromRGBO(206, 38, 64, 1.0),
-                  borderRadius: BorderRadius.all(const Radius.circular(32.0))),
+                  borderRadius: BorderRadius.all(const Radius.circular(15.0))),
               child: FlatButton(
                 onPressed: () {
                   Navigator.of(context).push(
@@ -220,7 +227,7 @@ class _CrewState extends State<Crew> {
               ),
             ),
 
-            SizedBox(height: 25.0),
+            SizedBox(height: 15.0),
 
             // Current User Post Container
             Container(
@@ -329,34 +336,88 @@ class _CrewState extends State<Crew> {
               ),
             ),
 
-            SizedBox(height: 10.0),
+            // Used as padding
+            SizedBox(height: 5.0),
 
-            _postList(),
+            // Post Categories
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget> [
+                FlatButton(
+                  child: Text(
+                    'RECENT',
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      color: currPostCategory == 0
+                          ? const Color.fromRGBO(250,205,85, 0.75)
+                          : Colors.white,
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      currPostCategory = 0;
+                    });
+                  },
+                ),
+
+                FlatButton(
+
+                  child: Text(
+                    'OLDEST',
+                    style: TextStyle(
+                        fontSize: 12.0,
+                        color: currPostCategory == 1
+                          ? const Color.fromRGBO(250,205,85, 0.75)
+                          : Colors.white,
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      currPostCategory = 1;
+                    });
+                  },
+                ),
+
+              ],
+            ),
+
+            currPostCategory == 0
+              ? _postList(currPostCategory)
+              : _postList(currPostCategory)
           ],
         ),
       );
     } else { return Container(height: 0.0,width: 0.0); }
   }
 
+  // This widget is used to update the singleton data
+  // that contains all the user information. Called
+  // every time the page is called or when a change
+  // is made to a user info.
   Widget _update() {
     return FutureBuilder(
-      future: FirebaseAuth.instance.currentUser(),
-      builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data != null) {
-            // Get posts from firebase and put it on singleton
-            crud.getCrewPosts().then((results) {
-              userData.posts = results;
-            });
+        future: FirebaseAuth.instance.currentUser(),
+        builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data != null) {
+              // Get posts from firebase and put it on singleton
+              crud.getCrewPosts().then((results) {
+                userData.posts = results;
+              });
+            }
           }
+          return Container(height: 0.0, width: 0.0);
         }
-        return Container(height: 0.0, width: 0.0);
-      }
     );
   }
 
-  Widget _postList() {
+  // This entire widget uses a ListView.builder within
+  // a Streambuilder to load the posts from the firestore
+  // databases into the app
+  Widget _postList(int category) {
     double _width = MediaQuery.of(context).size.width;
+    int index;
+
     if (posts != null) {
       return StreamBuilder(
         stream: posts,
@@ -367,12 +428,22 @@ class _CrewState extends State<Crew> {
               physics: ScrollPhysics(),
               shrinkWrap: true,
               itemCount: snapshot.data.documents.length,
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
               itemBuilder: (context, i) {
+
+                if (category == 0) {
+                  index = snapshot.data.documents.length - i - 1;
+                }
+                else if (category == 1) {
+                  index = i;
+                }
+
                 return Column(
                   children: <Widget>[
 
-                    SizedBox(height: 15.0),
+                    i != 0
+                    ? SizedBox(height: 15.0)
+                    : Container(height: 0.0, width: 0.0),
 
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -396,10 +467,9 @@ class _CrewState extends State<Crew> {
                                 color: const Color.fromRGBO(
                                     206, 38, 64, 1.0),
                                 borderRadius: BorderRadius.only(
-                                    topLeft: const Radius.circular(10.0),
-                                    topRight: const Radius.circular(10.0),
-                                    bottomLeft: const Radius.circular(10.0),
-                                  )),
+                                  topLeft: const Radius.circular(10.0),
+                                  topRight: const Radius.circular(10.0),
+                                )),
                             child: Stack(
                               children: <Widget>[
 
@@ -419,9 +489,7 @@ class _CrewState extends State<Crew> {
                                             backgroundColor: Colors
                                                 .transparent,
                                             backgroundImage: NetworkImage(
-                                              snapshot.data.documents[snapshot
-                                                  .data.documents.length - i - 1]
-                                                  .data['profilePic'],
+                                              snapshot.data.documents[index].data['profilePic'],
                                             ),
                                           ),
                                         ),
@@ -434,17 +502,13 @@ class _CrewState extends State<Crew> {
                                               },
                                               child: Text(
                                                 "${snapshot.data
-                                                    .documents[snapshot.data
-                                                    .documents.length - i -
-                                                    1]
+                                                    .documents[index]
                                                     .data['firstName']} ${snapshot
-                                                    .data.documents[snapshot
-                                                    .data.documents
-                                                    .length - i - 1]
+                                                    .data.documents[index]
                                                     .data['lastName']} ",
                                                 style: TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 18.0,
+                                                  fontSize: 17.0,
                                                   fontWeight: FontWeight
                                                       .bold,
                                                 ),
@@ -453,15 +517,11 @@ class _CrewState extends State<Crew> {
                                           ],
                                         ),
                                         subtitle: Text(
-                                          "posted on ${snapshot.data
-                                              .documents[snapshot.data.documents
-                                              .length -
-                                              i -
-                                              1]
-                                              .data['date']}",
+                                          "${snapshot.data
+                                              .documents[index].data['date']}",
                                           style: TextStyle(
                                             color: Colors.white,
-                                            fontSize: 15.0,
+                                            fontSize: 14.0,
                                             fontWeight: FontWeight.w300,
                                           ),
                                         ),
@@ -476,19 +536,17 @@ class _CrewState extends State<Crew> {
                                             top: 10.0),
                                         alignment: FractionalOffset.center,
                                         decoration: BoxDecoration(
-                                            color: Colors.white,
+                                            color: Colors.transparent,
                                             borderRadius: BorderRadius.all(
                                                 const Radius.circular(10.0))
                                         ),
                                         child: Align(
                                           alignment: Alignment.centerLeft,
                                           child: Text(
-                                            "${snapshot.data.documents[snapshot
-                                                .data.documents.length - i - 1]
-                                                .data['post']}",
+                                            "${snapshot.data.documents[index].data['post']}",
                                             style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 17.0,
+                                              color: Colors.white,
+                                              fontSize: 20.0,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),
@@ -506,28 +564,28 @@ class _CrewState extends State<Crew> {
                                           Align(
                                             alignment: Alignment.centerLeft,
                                             child: Container(
-                                              height: 40.0,
-                                              width: 40.0,
-                                              decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: const Color.fromRGBO(
-                                                        132, 26, 42, 1.0),
-                                                    offset: Offset(0.0, 5.0),
-                                                  ),
-                                                ],
-                                                color: const Color.fromRGBO(
-                                                    206, 38, 64, 1.0),
-                                                borderRadius: BorderRadius.all(
-                                                    const Radius.circular(10.0)),
-                                              ),
-                                              child: Container(
-                                                margin: const EdgeInsets.all(9),
-                                                child: Image.asset(
-                                                  'assets/icons/popcorn.png',
-                                                  color: Colors.white,
+                                                height: 40.0,
+                                                width: 40.0,
+                                                decoration: BoxDecoration(
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: const Color.fromRGBO(
+                                                          132, 26, 42, 1.0),
+                                                      offset: Offset(0.0, 5.0),
+                                                    ),
+                                                  ],
+                                                  color: const Color.fromRGBO(
+                                                      206, 38, 64, 1.0),
+                                                  borderRadius: BorderRadius.all(
+                                                      const Radius.circular(10.0)),
+                                                ),
+                                                child: Container(
+                                                    margin: const EdgeInsets.all(9),
+                                                    child: Image.asset(
+                                                      'assets/icons/popcorn.png',
+                                                      color: Colors.white,
+                                                    )
                                                 )
-                                              )
                                             ),
                                           ),
 
@@ -565,29 +623,29 @@ class _CrewState extends State<Crew> {
                                           Align(
                                             alignment: Alignment.centerLeft,
                                             child: Container(
-                                              margin: const EdgeInsets.only(left: 50.0),
-                                              height: 40.0,
-                                              width: 40.0,
-                                              decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: const Color.fromRGBO(
-                                                        132, 26, 42, 1.0),
-                                                    offset: Offset(0.0, 5.0),
-                                                  ),
-                                                ],
-                                                color: const Color.fromRGBO(
-                                                    206, 38, 64, 1.0),
-                                                borderRadius: BorderRadius.all(
-                                                    const Radius.circular(10.0)),
-                                              ),
-                                              child: Container(
-                                                margin: const EdgeInsets.all(9),
-                                                child: Image.asset(
-                                                  'assets/icons/laugh.png',
-                                                  color: Colors.white,
+                                                margin: const EdgeInsets.only(left: 50.0),
+                                                height: 40.0,
+                                                width: 40.0,
+                                                decoration: BoxDecoration(
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: const Color.fromRGBO(
+                                                          132, 26, 42, 1.0),
+                                                      offset: Offset(0.0, 5.0),
+                                                    ),
+                                                  ],
+                                                  color: const Color.fromRGBO(
+                                                      206, 38, 64, 1.0),
+                                                  borderRadius: BorderRadius.all(
+                                                      const Radius.circular(10.0)),
+                                                ),
+                                                child: Container(
+                                                    margin: const EdgeInsets.all(9),
+                                                    child: Image.asset(
+                                                      'assets/icons/laugh.png',
+                                                      color: Colors.white,
+                                                    )
                                                 )
-                                              )
                                             ),
                                           ),
 
@@ -595,29 +653,29 @@ class _CrewState extends State<Crew> {
                                           Align(
                                             alignment: Alignment.centerLeft,
                                             child: Container(
-                                              margin: const EdgeInsets.only(left: 50.0),
-                                              height: 40.0,
-                                              width: 40.0,
-                                              decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: const Color.fromRGBO(
-                                                        132, 26, 42, 1.0),
-                                                    offset: Offset(0.0, 5.0),
-                                                  ),
-                                                ],
-                                                color: const Color.fromRGBO(
-                                                    206, 38, 64, 1.0),
-                                                borderRadius: BorderRadius.all(
-                                                    const Radius.circular(10.0)),
-                                              ),
-                                              child: Container(
-                                                margin: const EdgeInsets.all(9),
-                                                child: Image.asset(
-                                                  'assets/icons/crying.png',
-                                                  color: Colors.white,
+                                                margin: const EdgeInsets.only(left: 50.0),
+                                                height: 40.0,
+                                                width: 40.0,
+                                                decoration: BoxDecoration(
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: const Color.fromRGBO(
+                                                          132, 26, 42, 1.0),
+                                                      offset: Offset(0.0, 5.0),
+                                                    ),
+                                                  ],
+                                                  color: const Color.fromRGBO(
+                                                      206, 38, 64, 1.0),
+                                                  borderRadius: BorderRadius.all(
+                                                      const Radius.circular(10.0)),
+                                                ),
+                                                child: Container(
+                                                    margin: const EdgeInsets.all(9),
+                                                    child: Image.asset(
+                                                      'assets/icons/crying.png',
+                                                      color: Colors.white,
+                                                    )
                                                 )
-                                              )
                                             ),
                                           ),
 
@@ -633,16 +691,16 @@ class _CrewState extends State<Crew> {
 
                                 // Checks if current user owns post, then shows delete button
                                 userData.uid ==
-                                    snapshot.data.documents[snapshot.data
-                                        .documents.length - i - 1].data['uid']
+                                    snapshot.data.documents[index].data['uid']
                                     ? Align(
                                   alignment: Alignment.centerRight,
                                   child: GestureDetector(
                                     onTap: () {
                                       deleteDialog(context,
-                                          snapshot.data.documents[snapshot.data
-                                              .documents.length - i - 1]
-                                              .documentID);
+                                        category == 0
+                                          ? snapshot.data.documents[snapshot.data.documents.length - i - 1].documentID
+                                          : snapshot.data.documents[i].documentID,
+                                      );
                                     },
                                     child: Container(
                                       margin: const EdgeInsets.only(
@@ -680,9 +738,15 @@ class _CrewState extends State<Crew> {
                             ),
                           ),
 
+                          // Border to separate post from comments
+                          Container(
+                            height: 2.5,
+                            alignment: FractionalOffset.center,
+                            color: Color.fromRGBO(193, 34, 59, 1.0),
+                          ),
+
                           // Comment Section
                           Container(
-                            margin: const EdgeInsets.only(left: 50.0,),
                             alignment: FractionalOffset.center,
                             decoration: BoxDecoration(
                                 boxShadow: [
@@ -694,7 +758,7 @@ class _CrewState extends State<Crew> {
                                 ],
                                 color: const Color.fromRGBO(206, 38, 64, 1.0),
                                 borderRadius: BorderRadius.vertical(
-                                    bottom: const Radius.circular(10.0),
+                                  bottom: const Radius.circular(10.0),
                                 )),
                             child: Container(
                               margin: const EdgeInsets.only(
@@ -704,51 +768,53 @@ class _CrewState extends State<Crew> {
                                 shrinkWrap: true,
                                 children: <Widget> [
 
-                                  Row(
-                                    children: <Widget>[
+                                  Container(
+                                    child: Row(
+                                      children: <Widget>[
 
-                                    CircleAvatar(
-                                      radius: 18,
-                                      backgroundColor: Colors.transparent,
-                                      backgroundImage: NetworkImage(
-                                        userData.profilePic,
-                                      ),
-                                    ),
-
-                                    // Used as padding
-                                    SizedBox(width: 10.0),
-
-                                    // Current user comment box
-                                    Container(
-                                      width: _width * 0.596,
-                                      height: 36.0,
-                                      padding: const EdgeInsets.all(10.0),
-                                      alignment: FractionalOffset.center,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                              const Radius.circular(10.0))
-                                      ),
-                                      child: TextField( // Email text box
-                                        keyboardType: TextInputType.text,
-                                        maxLines: null,
-                                        style: TextStyle(color: Colors.black),
-                                        decoration: InputDecoration.collapsed(
-                                          fillColor: Colors.transparent,
-                                          hintText: 'Write a comment',
-                                          hintStyle: TextStyle(color: Colors.black54),
-                                          filled: true,
+                                        CircleAvatar(
+                                          radius: 18,
+                                          backgroundColor: Colors.transparent,
+                                          backgroundImage: NetworkImage(
+                                            userData.profilePic,
+                                          ),
                                         ),
-                                        cursorColor: const Color.fromRGBO(
-                                            206, 38, 64, 1.0),
-                                        onSubmitted: (value) {
-                                          print('Commented!');
-                                        },
-                                      ),
-                                    ),
 
-                                  ],
-                                ),
+                                        // Used as padding
+                                        SizedBox(width: 10.0),
+
+                                        // Current user comment box
+                                        Container(
+                                          width: _width * 0.70,
+                                          height: 36.0,
+                                          padding: const EdgeInsets.all(10.0),
+                                          alignment: FractionalOffset.center,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(
+                                                  const Radius.circular(10.0))
+                                          ),
+                                          child: TextField( // Email text box
+                                            keyboardType: TextInputType.text,
+                                            maxLines: null,
+                                            style: TextStyle(color: Colors.black),
+                                            decoration: InputDecoration.collapsed(
+                                              fillColor: Colors.transparent,
+                                              hintText: 'Write a comment',
+                                              hintStyle: TextStyle(color: Colors.black54),
+                                              filled: true,
+                                            ),
+                                            cursorColor: const Color.fromRGBO(
+                                                206, 38, 64, 1.0),
+                                            onSubmitted: (value) {
+                                              print('Commented!');
+                                            },
+                                          ),
+                                        ),
+
+                                      ],
+                                    ),
+                                  ),
 
                                   // Used as padding
                                   SizedBox(height: 10.0),
@@ -827,8 +893,8 @@ class _CrewListState extends State<CrewList> {
                       child: Text(
                         'Meet Your Crew',
                         style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 22
+                          fontWeight: FontWeight.w800,
+                          fontSize: 22
                         ),
                       ),
                     ),
@@ -851,6 +917,10 @@ class _CrewListState extends State<CrewList> {
         ]
     );
   }
+
+  // Widget for displaying the list of crew members
+  // with a ListView.builder using the singleton
+  // to avoid loading times
 
   Widget _crewList() {
 
