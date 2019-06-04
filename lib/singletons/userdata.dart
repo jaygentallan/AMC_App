@@ -17,7 +17,6 @@ class UserData {
 
   QuerySnapshot users;
   Stream posts;
-  DocumentReference postRef;
   DocumentSnapshot viewUser;
 
   factory UserData() {

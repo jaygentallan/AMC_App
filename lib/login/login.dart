@@ -83,6 +83,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
                           SizedBox(height: 80.0), // Used to add padding
 
+                          // AMC CREW LOGO
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(360),
