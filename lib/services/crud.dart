@@ -66,13 +66,23 @@ class CrudMethods {
         .snapshots();
   }
 
-  Future getCrewPostCommments(docID) async {
+  Future getCrewPostComments(docID) async {
     return await Firestore.instance
         .collection('posts')
         .document('crew')
         .collection('posts')
         .document(docID)
         .collection('comments')
+        .snapshots();
+  }
+
+  Future getCrewPostLikes(docID) async {
+    return await Firestore.instance
+        .collection('posts')
+        .document('crew')
+        .collection('posts')
+        .document(docID)
+        .collection('likes')
         .snapshots();
   }
 
@@ -137,6 +147,63 @@ class CrudMethods {
         .delete()
         .catchError((e) {
       print(e);
+    });
+  }
+
+  checkCrewPostLike(docID, uid) async {
+    return Firestore.instance
+      .collection('posts')
+      .document('crew')
+      .collection('posts')
+      .document(docID)
+      .collection('likes')
+      .where('uid', isEqualTo: uid)
+      .getDocuments();
+  }
+
+  getCrewPostLikesCount(docID) async {
+    return Firestore.instance
+        .collection('posts')
+        .document('crew')
+        .collection('posts')
+        .document(docID)
+        .collection('likes')
+        .getDocuments();
+  }
+
+  Future<void> addCrewPostLike(docID, data) async {
+    Firestore.instance
+        .collection('posts')
+        .document('crew')
+        .collection('posts')
+        .document(docID)
+        .collection('likes')
+        .add({
+          'firstName': data[0],
+          'lastName': data[1],
+          'profilePic': data[2],
+          'uid': data[3],
+          'date': data[4],
+          })
+        .then((value) {})
+        .catchError((e) {
+      print(e); });
+  }
+
+  deleteCrewLike(postDocID, likeDocID) {
+
+    FirebaseAuth.instance.currentUser().then((user) {
+      Firestore.instance.collection('/posts/crew/posts/${postDocID}/likes')
+          .where('uid', isEqualTo: user.uid)
+          .getDocuments()
+          .then((docs) {
+            print('Deleting...');
+        Firestore.instance.document('/posts/crew/posts/${postDocID}/likes/${docs.documents[0].documentID}')
+            .delete()
+            .then((val) {
+          print('Deleted');
+        });
+      });
     });
   }
 }

@@ -15,6 +15,7 @@ import 'package:amc/drawer/chat.dart';
 import 'package:amc/drawer/notifications.dart';
 import 'package:amc/drawer/stats.dart';
 import 'package:amc/drawer/settings.dart';
+import 'package:intl/intl.dart';
 
 import 'services/crud.dart';
 
@@ -60,6 +61,7 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
 
   bool init = true;
   int _currentIndex = 0;
+  var time;
 
   @override
   void initState() {
@@ -408,11 +410,16 @@ class SideDrawer extends StatelessWidget {
 
 class HomeAnimation extends AnimatedWidget {
   final String name;
+  var time;
 
   HomeAnimation({Key key, Animation<double> animation, this.name})
       :super(key :key, listenable :animation);
 
   Widget build(BuildContext context) {
+
+    time = DateTime.now();
+    time = int.parse(DateFormat.H().format(time));
+
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
@@ -434,7 +441,13 @@ class HomeAnimation extends AnimatedWidget {
         child: Material(
           type: MaterialType.transparency,
           child: Center(
-            child: Text("Hello, ${name}!",
+            child: Text(time > 6 && time <= 12
+              ? "Good morning, ${name}!"
+              : time > 12 && time <= 20
+                ? "Good afternoon, ${name}!"
+                : time > 20 && time <= 6
+                  ? "Good evening, ${name}!"
+                  : "",
               style: TextStyle(fontSize: 25,color:
               animation.value > 0.8
                   ? Colors.white.withOpacity(0.0)
