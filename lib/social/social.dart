@@ -49,9 +49,9 @@ class _SocialPageState extends State<SocialPage> {
                       fontSize: 12),
                   child: TabBar(
                     tabs: _tabs,
-                    labelColor: Colors.white,
+                    labelColor: const Color.fromRGBO(250,205,85, 0.75),
                     labelStyle: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),
-                    unselectedLabelColor: Colors.white30,
+                    unselectedLabelColor: Colors.white,
                     indicatorColor: const Color.fromRGBO(206, 38, 64, 1.0),
                   ),
                 ),
@@ -95,6 +95,7 @@ class _SocialPageState extends State<SocialPage> {
 
             // The body pages
             TabBarView(
+              physics: NeverScrollableScrollPhysics(),
               children: _tabPages,
             ),
 

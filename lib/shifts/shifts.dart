@@ -56,7 +56,7 @@ class ShiftsPage extends StatelessWidget {
             ),
 
             TabBarView(
-              //physics: NeverScrollableScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               children: _tabPages,
             ),
 

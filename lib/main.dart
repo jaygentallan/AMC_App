@@ -226,26 +226,34 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
                           ? Text(
                           'Home',
                           style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 22))
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                            ),
+                          )
                           : _currentIndex == 1
                           ? Text(
                           'Shifts',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 22))
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                            ),
+                          )
                           : _currentIndex == 2
                           ? Text(
                           'Social',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 22))
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                            ),
+                          )
                           : _currentIndex == 3
                           ? Text(
                           'Profile',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 22))
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                            ),
+                          )
                           : Container(width: 0.0,height: 0.0)
                   ),
                 ],
@@ -271,8 +279,8 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
               elevation: 0,
               selectedFontSize: 10,
               unselectedFontSize: 9,
-              selectedItemColor: Colors.white,
-              unselectedItemColor: Colors.white24,
+              selectedItemColor: const Color.fromRGBO(250,205,85, 0.75),
+              unselectedItemColor: Colors.white,
               iconSize: 22.5,
               onTap: onTabTapped,
               type: BottomNavigationBarType.fixed,
@@ -441,19 +449,22 @@ class HomeAnimation extends AnimatedWidget {
         child: Material(
           type: MaterialType.transparency,
           child: Center(
-            child: Text(time > 6 && time <= 12
-              ? "Good morning, ${name}!"
-              : time > 12 && time <= 20
-                ? "Good afternoon, ${name}!"
-                : time > 20 && time <= 6
-                  ? "Good evening, ${name}!"
-                  : "",
-              style: TextStyle(fontSize: 25,color:
-              animation.value > 0.8
-                  ? Colors.white.withOpacity(0.0)
-                  : animation.value > 0.4
-                  ? Colors.white
-                  : Colors.white.withOpacity(animation.value * 2.5),
+            // Checks current time and displays appropriate
+            // greeting message to the user.
+            child: Text(time > 6 && time <= 11
+                ? "Good morning, ${name}!"
+                : time > 11 && time <= 19
+                  ? "Good afternoon, ${name}!"
+                  : time > 19 || time <= 6
+                    ? "Good evening, ${name}!"
+                    : "",
+              style: TextStyle(
+                fontSize: 23,
+                color: animation.value > 0.8
+                    ? Colors.white.withOpacity(0.0)
+                    : animation.value > 0.4
+                      ? Colors.white
+                      : Colors.white.withOpacity(animation.value * 2.5),
               ),
             ),
           ),
