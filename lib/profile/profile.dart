@@ -236,7 +236,7 @@ class _UserInfoState extends State<UserInfo> {
             title: Center(
               child: Text(data[0],
                 style: TextStyle(
-                  color: const Color.fromRGBO(250,205,85, 1.0),
+                  color: const Color.fromRGBO(212,175,55, 1.0),
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 0.3,
@@ -263,7 +263,7 @@ class _UserInfoState extends State<UserInfo> {
                 child: Text(
                   'Save',
                   style: TextStyle(
-                    color: const Color.fromRGBO(250,205,85, 1.0),
+                    color: const Color.fromRGBO(212,175,55, 1.0),
                   ),
                 ),
                 onPressed: () {
