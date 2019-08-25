@@ -37,11 +37,12 @@ class _CrewState extends State<Crew> {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: const Color.fromRGBO(206, 38, 64, 1.0),
+            backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
             title: Center(
-              child: Text('Deleting Post',
+              child: Text(
+                'Deleting Post',
                 style: TextStyle(
                   color: const Color.fromRGBO(250,205,85, 1.0),
                   fontSize: 18.0,
@@ -53,10 +54,10 @@ class _CrewState extends State<Crew> {
             content: Container(
               height: 20.0,
               child: Text(
-                  'Are you sure you want to delete?',
-                  style: TextStyle(
-                      color: Colors.white
-                  )
+                'Are you sure you want to delete?',
+                style: TextStyle(
+                  color: Colors.black54,
+                ),
               ),
             ),
             actions: <Widget>[
@@ -101,7 +102,7 @@ class _CrewState extends State<Crew> {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: const Color.fromRGBO(206, 38, 64, 1.0),
+            backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
             title: Center(
@@ -119,7 +120,7 @@ class _CrewState extends State<Crew> {
               child: Text(
                 'Are you sure you want to post?',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black54,
                 ),
               ),
             ),
@@ -180,7 +181,7 @@ class _CrewState extends State<Crew> {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: const Color.fromRGBO(206, 38, 64, 1.0),
+            backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
             title: Center(
@@ -198,7 +199,7 @@ class _CrewState extends State<Crew> {
               child: Text(
                   'Are you sure you want to delete?',
                   style: TextStyle(
-                      color: Colors.white
+                      color: Colors.black54,
                   )
               ),
             ),
@@ -272,18 +273,16 @@ class _CrewState extends State<Crew> {
 
             // Meet Your Crew Button
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 100.0),
+              margin: const EdgeInsets.symmetric(horizontal: 10.0),
               height: 35.0,
               alignment: FractionalOffset.center,
               decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromRGBO(132, 26, 42, 1.0),
-                      offset: Offset(0.0, 5.0),
-                    ),
-                  ],
-                  color: const Color.fromRGBO(206, 38, 64, 1.0),
-                  borderRadius: BorderRadius.all(const Radius.circular(15.0))),
+                color: const Color.fromRGBO(206, 38, 64, 1.0),
+                border: Border.all(
+                  color: const Color.fromRGBO(132, 26, 42, 1.0),
+                  width: 1.0,
+                ),
+              ),
               child: FlatButton(
                 onPressed: () {
                   Navigator.of(context).push(
@@ -297,28 +296,31 @@ class _CrewState extends State<Crew> {
                       color: Colors.white,
                       fontSize: 17.0,
                       fontWeight: FontWeight.w300,
-                      letterSpacing: 0.3,
+                      letterSpacing: 0.75,
                     ),
                   ),
                 ),
               ),
             ),
 
-            SizedBox(height: 15.0),
+            SizedBox(height: 10.0),
 
             // Current User Post Container
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 15.0),
               alignment: FractionalOffset.center,
               decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromRGBO(132, 26, 42, 1.0),
-                      offset: Offset(0.0, 5.0),
-                    ),
-                  ],
-                  color: const Color.fromRGBO(206, 38, 64, 1.0),
-                  borderRadius: BorderRadius.all(const Radius.circular(10.0))),
+                color: const Color.fromRGBO(206, 38, 64, 1.0),
+                border: Border(
+                  top: BorderSide(
+                    color: const Color.fromRGBO(132, 26, 42, 1.0),
+                    width: 1.0,
+                  ),
+                  bottom: BorderSide(
+                    color: const Color.fromRGBO(132, 26, 42, 1.0),
+                    width: 1.0,
+                  ),
+                ),
+              ),
               child: Container(
                 child: Column(
                   children: <Widget>[
@@ -413,46 +415,51 @@ class _CrewState extends State<Crew> {
               ),
             ),
 
-            // Used as padding
-            SizedBox(height: 5.0),
-
             // Post Categories
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget> [
-                FlatButton(
-                  child: Text(
-                    'RECENT',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: currPostCategory == 0
-                          ? const Color.fromRGBO(250,205,85, 0.75)
-                          : Colors.white,
+
+                // if clicked, sorts post to most recent
+                SizedBox(
+                  height: 35.0,
+                  child: FlatButton(
+                    child: Text(
+                      'RECENT',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: currPostCategory == 0
+                            ? const Color.fromRGBO(250,205,85, 0.75)
+                            : Colors.white,
+                      ),
                     ),
+                    onPressed: () {
+                      setState(() {
+                        currPostCategory = 0;
+                      });
+                    },
                   ),
-                  onPressed: () {
-                    setState(() {
-                      currPostCategory = 0;
-                    });
-                  },
                 ),
 
-                FlatButton(
-
-                  child: Text(
-                    'OLDEST',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: currPostCategory == 1
-                          ? const Color.fromRGBO(250,205,85, 0.75)
-                          : Colors.white,
+                // if clicked, sorts post to oldest
+                SizedBox(
+                  height: 35.0,
+                  child: FlatButton(
+                    child: Text(
+                      'OLDEST',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: currPostCategory == 1
+                            ? const Color.fromRGBO(250,205,85, 0.75)
+                            : Colors.white,
+                      ),
                     ),
+                    onPressed: () {
+                      setState(() {
+                        currPostCategory = 1;
+                      });
+                    },
                   ),
-                  onPressed: () {
-                    setState(() {
-                      currPostCategory = 1;
-                    });
-                  },
                 ),
 
               ],
@@ -505,10 +512,8 @@ class _CrewState extends State<Crew> {
               physics: ScrollPhysics(),
               shrinkWrap: true,
               itemCount: snapshot.data.documents.length,
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
               itemBuilder: (context, i) {
 
-                int length;
                 final TextEditingController commentController = TextEditingController();
 
                 if (category == 0) {
@@ -524,11 +529,11 @@ class _CrewState extends State<Crew> {
                   children: <Widget>[
 
                     i != 0
-                        ? SizedBox(height: 15.0)
+                      // separator for each post box
+                        ? SizedBox(height: 9.0)
                         : Container(height: 0.0, width: 0.0),
 
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
                       alignment: FractionalOffset.center,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
@@ -539,19 +544,14 @@ class _CrewState extends State<Crew> {
                           Container(
                             alignment: FractionalOffset.center,
                             decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color.fromRGBO(
-                                        132, 26, 42, 1.0),
-                                    offset: Offset(0.0, 5.0),
-                                  ),
-                                ],
-                                color: const Color.fromRGBO(
-                                    206, 38, 64, 1.0),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: const Radius.circular(10.0),
-                                  topRight: const Radius.circular(10.0),
-                                )),
+                              color: const Color.fromRGBO(206, 38, 64, 1.0),
+                              border: Border(
+                                top: BorderSide(
+                                  color: const Color.fromRGBO(132, 26, 42, 1.0),
+                                  width: 1.0,
+                                ),
+                              ),
+                              ),
                             child: Stack(
                               children: <Widget>[
 
@@ -632,7 +632,7 @@ class _CrewState extends State<Crew> {
                                               .documents[index].data['date']}",
                                           style: TextStyle(
                                             color: Colors.white,
-                                            fontSize: 14.0,
+                                            fontSize: 12.5,
                                             fontWeight: FontWeight.w300,
                                           ),
                                         ),
@@ -640,11 +640,10 @@ class _CrewState extends State<Crew> {
 
                                       // Post content
                                       Container(
-                                        padding: const EdgeInsets.all(10.0),
                                         margin: const EdgeInsets.only(
-                                            left: 15.0,
-                                            right: 15.0,
-                                            top: 10.0),
+                                          left: 15.0,
+                                          right: 15.0,
+                                        ),
                                         alignment: FractionalOffset.center,
                                         decoration: BoxDecoration(
                                             color: Colors.transparent,
@@ -657,60 +656,65 @@ class _CrewState extends State<Crew> {
                                             "${snapshot.data.documents[index].data['post']}",
                                             style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 20.0,
+                                              fontSize: 17.0,
                                               fontWeight: FontWeight.w300,
                                             ),
                                           ),
                                         ),
                                       ),
 
+                                      /*
                                       // Row for like buttons
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         children: <Widget> [
 
                                           StreamBuilder(
-                                            stream: Firestore.instance
-                                              .collection('posts')
-                                              .document('crew')
-                                              .collection('posts')
-                                              .document(snapshot.data.documents[postIndex].documentID)
-                                              .collection('likes')
-                                              .snapshots(),
-                                            builder: (context, likeSnapshot) {
+                                              stream: Firestore.instance
+                                                  .collection('posts')
+                                                  .document('crew')
+                                                  .collection('posts')
+                                                  .document(snapshot.data.documents[postIndex].documentID)
+                                                  .collection('likes')
+                                                  .snapshots(),
+                                              builder: (context, likeSnapshot) {
 
-                                              if (likeSnapshot.data != null) {
-                                                // Loads each post from the firebase database
-                                                return Container(
-                                                  width: 100.0,
-                                                  height: 66.0,
-                                                  child: ListView.builder(
-                                                    physics: const NeverScrollableScrollPhysics(),
-                                                    shrinkWrap: true,
-                                                    itemCount: likeSnapshot.data.documents.length != 0
-                                                              ? likeSnapshot.data.documents.length
-                                                              : likeSnapshot.data.documents.length + 1,
-                                                    itemBuilder: (context, i) {
+                                                if (likeSnapshot.data != null) {
+                                                  // Loads each post from the firebase database
+                                                  return Container(
+                                                    width: 75.0,
+                                                    height: 62.5,
+                                                    child: ListView.builder(
+                                                        physics: const NeverScrollableScrollPhysics(),
+                                                        shrinkWrap: true,
+                                                        itemCount: likeSnapshot.data.documents.length != 0
+                                                            ? likeSnapshot.data.documents.length
+                                                            : likeSnapshot.data.documents.length + 1,
+                                                        itemBuilder: (context, i) {
 
-                                                      return LikeButton(
-                                                        docID: snapshot.data.documents[postIndex].documentID,
-                                                        likeID: likeSnapshot.data.documents.length != 0
-                                                            ? likeSnapshot.data.documents[0].documentID
-                                                            : '',
-                                                      );
+                                                          /*
+                                                          return LikeButton(
+                                                            docID: snapshot.data.documents[postIndex].documentID,
+                                                            likeID: likeSnapshot.data.documents.length != 0
+                                                                ? likeSnapshot.data.documents[0].documentID
+                                                                : '',
+                                                          );
+                                                          */
 
-                                                    }),
-                                                );
+                                                        }),
+                                                  );
+                                                }
+                                                else { return Container(height: 0.0, width: 0.0); }
                                               }
-                                              else { return Container(height: 0.0, width: 0.0); }
-                                            }
-                                            ),
+                                          ),
 
                                         ],
                                       ),
 
+                                      */
+
                                       // Used for padding
-                                      SizedBox(height: 15.0),
+                                      SizedBox(height: 10.0),
 
                                     ],
                                   ),
@@ -752,243 +756,267 @@ class _CrewState extends State<Crew> {
                             ),
                           ),
 
-                          // Border to separate post from comments
+                          // Border to separate section
                           Container(
                             height: 2.5,
                             alignment: FractionalOffset.center,
                             color: Color.fromRGBO(193, 34, 59, 1.0),
                           ),
 
-                          // COMMENT SECTION
+                      // COMMENT SECTION
                           Container(
-                            alignment: FractionalOffset.center,
+                            alignment: AlignmentDirectional.center,
                             decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color.fromRGBO(
-                                        132, 26, 42, 1.0),
-                                    offset: Offset(0.0, 5.0),
-                                  ),
-                                ],
-                                color: const Color.fromRGBO(206, 38, 64, 1.0),
-                                borderRadius: BorderRadius.vertical(
-                                  bottom: const Radius.circular(10.0),
-                                )),
+                              color: const Color.fromRGBO(206, 38, 64, 1.0),
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: const Color.fromRGBO(132, 26, 42, 1.0),
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
                             child: Container(
-                              margin: const EdgeInsets.only(
-                                  left: 15.0, right: 15.0, top: 10.0),
-                              child: Column(
-                                children: <Widget> [
+                              width: _width * 0.9,
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(206, 38, 64, 1.0),
+                              ),
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    left: 15.0, right: 15.0, top: 10.0),
+                                child: Column(
+                                  children: <Widget> [
 
-                                  StreamBuilder(
-                                    stream: Firestore.instance
-                                        .collection('posts')
-                                        .document('crew')
-                                        .collection('posts')
-                                        .document(snapshot.data.documents[postIndex].documentID)
-                                        .collection('comments')
-                                        .snapshots(),
-                                    builder: (context, commentSnapshot) {
+                                    StreamBuilder(
+                                        stream: Firestore.instance
+                                            .collection('posts')
+                                            .document('crew')
+                                            .collection('posts')
+                                            .document(snapshot.data.documents[postIndex].documentID)
+                                            .collection('comments')
+                                            .snapshots(),
+                                        builder: (context, commentSnapshot) {
 
-                                      switch (commentSnapshot.connectionState) {
-                                        case ConnectionState.none:
-                                        case ConnectionState.waiting:
-                                        default:
-                                        // ListView.builder for comments
-                                          if (commentSnapshot.hasData && commentSnapshot.data != null) {
+                                          switch (commentSnapshot.connectionState) {
+                                            case ConnectionState.none:
+                                            case ConnectionState.waiting:
+                                            default:
+                                            // ListView.builder for comments
+                                              if (commentSnapshot.hasData && commentSnapshot.data != null) {
 
-                                            return ListView.builder(
-                                              physics: ScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemCount: commentSnapshot.data.documents.length,
-                                              itemBuilder: (context, i) {
+                                                return ListView.builder(
+                                                    physics: ScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    itemCount: commentSnapshot.data.documents.length,
+                                                    itemBuilder: (context, i) {
 
-                                                return Column(
-                                                  children: <Widget> [
+                                                      int commentIndex = i;
 
-                                                    Container(
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: <Widget>[
+                                                      return Column(
+                                                        children: <Widget> [
 
-                                                          CircleAvatar(
-                                                            radius: 18,
-                                                            backgroundColor: Colors
-                                                                .transparent,
-                                                            backgroundImage: NetworkImage(
-                                                              commentSnapshot.data.documents[i].data['profilePic'],
-                                                            ),
-                                                          ),
+                                                          Container(
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: <Widget>[
 
-                                                          // Used as padding
-                                                          SizedBox(width: 15.0),
+                                                                GestureDetector(
+                                                                  onTap: () {
 
-                                                          // Long hold to delete comment if user is owner
-                                                          GestureDetector(
-                                                            onLongPress: () {
-                                                              if (userData.uid == commentSnapshot.data.documents[i].data['uid']) {
-                                                                deleteCommentDialog(
-                                                                  context,
-                                                                  snapshot.data.documents[postIndex].documentID,
-                                                                  commentSnapshot.data.documents[i].documentID);
-                                                              }
-                                                            },
-                                                            child: Container(
-                                                              padding: const EdgeInsets.only(top: 6.0, left: 10.0, bottom: 10.0),
-                                                              decoration: BoxDecoration(
-                                                                color: const Color.fromRGBO(193, 34, 59, 1.0),
-                                                                borderRadius: BorderRadius.all(const Radius.circular(10.0)),
-                                                              ),
-                                                              child: Column(
-                                                                  children: <Widget> [
+                                                                    // Gets profile data from firestore database by using
+                                                                    // the UID of the user that is clicked on. This uses
+                                                                    // the commentIndex that each ListTile has. Then the
+                                                                    // data is passed into the userData.viewUser singleton
+                                                                    // for use in ViewProfilePage.
+                                                                    crud.getProfileDataFromPost(commentSnapshot.data.documents[commentIndex].data['uid']).then((results) {
+                                                                      userData.viewUser = results.documents[0];
 
-                                                                    // Post content
-                                                                    Container(
-                                                                      decoration: BoxDecoration(
-                                                                          borderRadius: BorderRadius.all(
-                                                                              const Radius.circular(10.0)
-                                                                          )
-                                                                      ),
-                                                                      child: Column(
-                                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                                        children: <Widget> [
+                                                                      Navigator.push(
+                                                                          context,
+                                                                          MaterialPageRoute(builder: (context) => ViewProfilePage()));
+                                                                    });
+                                                                  },
+                                                                  child: CircleAvatar(
+                                                                    radius: 18,
+                                                                    backgroundColor: Colors
+                                                                        .transparent,
+                                                                    backgroundImage: NetworkImage(
+                                                                      commentSnapshot.data.documents[i].data['profilePic'],
+                                                                    ),
+                                                                  ),
+                                                                ),
 
-                                                                          Row(
-                                                                            children: <Widget> [
-                                                                              // Full Name of commenter
-                                                                              Container(
-                                                                                width: _width * 0.6,
-                                                                                child: Text(
-                                                                                  "${commentSnapshot.data.documents[i].data['firstName']} "
-                                                                                      "${commentSnapshot.data.documents[i].data['lastName']}",
-                                                                                  style: TextStyle(
-                                                                                    color: Colors.white,
-                                                                                    fontSize: 16.0,
-                                                                                    fontWeight: FontWeight.bold,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
+                                                                // Used as padding
+                                                                SizedBox(width: 15.0),
 
-                                                                            ],
-                                                                          ),
-
-                                                                          // Comment content
-                                                                          Container(
-                                                                            padding: const EdgeInsets.only(top: 5.0),
-                                                                            width: _width * 0.7,
-                                                                            child: Text(
-                                                                              "${commentSnapshot.data.documents[i].data['comment']}",
-                                                                              style: TextStyle(
-                                                                                color: Colors.white,
-                                                                                fontSize: 16.0,
-                                                                                fontWeight: FontWeight.w300,
-                                                                              ),
-                                                                            ),
-                                                                          ),
-
-                                                                        ],
+                                                                // Long hold to delete comment if user is owner
+                                                                GestureDetector(
+                                                                  onLongPress: () {
+                                                                    if (userData.uid == commentSnapshot.data.documents[i].data['uid']) {
+                                                                      deleteCommentDialog(
+                                                                          context,
+                                                                          snapshot.data.documents[postIndex].documentID,
+                                                                          commentSnapshot.data.documents[i].documentID);
+                                                                    }
+                                                                  },
+                                                                  child: Container(
+                                                                    padding: const EdgeInsets.only(top: 6.0, left: 10.0, bottom: 10.0),
+                                                                    decoration: BoxDecoration(
+                                                                      color: const Color.fromRGBO(193, 34, 59, 1.0),
+                                                                      borderRadius: BorderRadius.only(
+                                                                        bottomLeft: const Radius.circular(10.0),
+                                                                        topRight: const Radius.circular(10.0),
+                                                                        bottomRight: const Radius.circular(10.0),
                                                                       ),
                                                                     ),
-                                                                  ]
-                                                              ),
+                                                                    child: Column(
+                                                                        children: <Widget> [
+
+                                                                          // Post content
+                                                                          Container(
+                                                                            decoration: BoxDecoration(
+                                                                                borderRadius: BorderRadius.all(
+                                                                                    const Radius.circular(10.0)
+                                                                                )
+                                                                            ),
+                                                                            child: Column(
+                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: <Widget> [
+
+                                                                                Row(
+                                                                                  children: <Widget> [
+                                                                                    // Full Name of commenter
+                                                                                    Container(
+                                                                                      width: _width * 0.6,
+                                                                                      child: Text(
+                                                                                        "${commentSnapshot.data.documents[i].data['firstName']} "
+                                                                                            "${commentSnapshot.data.documents[i].data['lastName']}",
+                                                                                        style: TextStyle(
+                                                                                          color: Colors.white,
+                                                                                          fontSize: 16.0,
+                                                                                          fontWeight: FontWeight.bold,
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+
+                                                                                  ],
+                                                                                ),
+
+                                                                                // Comment content
+                                                                                Container(
+                                                                                  padding: const EdgeInsets.only(top: 5.0),
+                                                                                  width: _width * 0.663,
+                                                                                  child: Text(
+                                                                                    "${commentSnapshot.data.documents[i].data['comment']}",
+                                                                                    style: TextStyle(
+                                                                                      color: Colors.white,
+                                                                                      fontSize: 16.0,
+                                                                                      fontWeight: FontWeight.w300,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ]
+                                                                    ),
+                                                                  ),
+                                                                ),
+
+                                                              ],
                                                             ),
                                                           ),
 
+                                                          SizedBox(height: 10.0),
+
                                                         ],
-                                                      ),
-                                                    ),
-
-                                                    SizedBox(height: 10.0),
-
-                                                  ],
+                                                      );
+                                                    }
                                                 );
-                                              }
-                                            );
-                                          } else { return Container(height: 0.0, width: 0.0); }
-                                      }
-                                    }
-                                  ),
-
-                                  // Current User Comment Box
-                                  Container(
-                                    child: Row(
-                                      children: <Widget>[
-
-                                        CircleAvatar(
-                                          radius: 18,
-                                          backgroundColor: Colors.transparent,
-                                          backgroundImage: NetworkImage(
-                                            userData.profilePic,
-                                          ),
-                                        ),
-
-                                        // Used as padding
-                                        SizedBox(width: 10.0),
-
-                                        // Current user comment box
-                                        Container(
-                                          width: _width * 0.70,
-                                          padding: const EdgeInsets.all(10.0),
-                                          alignment: FractionalOffset.center,
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.all(
-                                                  const Radius.circular(10.0))
-                                          ),
-                                          child: TextField( // Email text box
-                                            controller: commentController,
-                                            keyboardType: TextInputType.text,
-                                            maxLines: null,
-                                            style: TextStyle(color: Colors.black),
-                                            decoration: InputDecoration.collapsed(
-                                              fillColor: Colors.transparent,
-                                              hintText: 'Write a comment',
-                                              hintStyle: TextStyle(color: Colors.black54),
-                                              filled: true,
-                                            ),
-                                            cursorColor: const Color.fromRGBO(
-                                                206, 38, 64, 1.0),
-                                            onSubmitted: (value) {
-
-                                              // Gets the current date and time to put on the post
-                                              var now = DateTime.now();
-                                              userData.date = DateFormat.yMMMMd('en_US').format(now);
-                                              userData.date = "${userData.date}" " ${DateFormat.jm().format(now)}";
-
-                                              // Puts all the user comment data to
-                                              // pass through the function.
-                                              List<String> commentData = [
-                                                userData.firstName,
-                                                userData.lastName,
-                                                userData.profilePic,
-                                                value,
-                                                userData.uid,
-                                                userData.date,
-                                              ];
-
-                                              crud.addCrewPostComment(snapshot.data.documents[postIndex].documentID, commentData);
-
-                                              commentController.clear();
-                                            },
-                                          ),
-                                        ),
-
-                                      ],
+                                              } else { return Container(height: 0.0, width: 0.0); }
+                                          }
+                                        }
                                     ),
-                                  ),
 
-                                  // Used as padding
-                                  SizedBox(height: 10.0),
+                                    // Current User Comment Box
+                                    Container(
+                                      child: Row(
+                                        children: <Widget>[
 
-                                ],
+                                          CircleAvatar(
+                                            radius: 18,
+                                            backgroundColor: Colors.transparent,
+                                            backgroundImage: NetworkImage(
+                                              userData.profilePic,
+                                            ),
+                                          ),
+
+                                          // Used as padding
+                                          SizedBox(width: 10.0),
+
+                                          // Current user comment box
+                                          Container(
+                                            width: _width * 0.70,
+                                            height: 30.0,
+                                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                            alignment: FractionalOffset.center,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.all(
+                                                    const Radius.circular(10.0))
+                                            ),
+                                            child: TextField( // Email text box
+                                              controller: commentController,
+                                              keyboardType: TextInputType.text,
+                                              maxLines: null,
+                                              style: TextStyle(color: Colors.black),
+                                              decoration: InputDecoration.collapsed(
+                                                fillColor: Colors.transparent,
+                                                hintText: 'Write a comment',
+                                                hintStyle: TextStyle(color: Colors.black54),
+                                                filled: true,
+                                              ),
+                                              cursorColor: const Color.fromRGBO(
+                                                  206, 38, 64, 1.0),
+                                              onSubmitted: (value) {
+
+                                                // Gets the current date and time to put on the post
+                                                var now = DateTime.now();
+                                                userData.date = DateFormat.yMMMMd('en_US').format(now);
+                                                userData.date = "${userData.date}" " ${DateFormat.jm().format(now)}";
+
+                                                // Puts all the user comment data to
+                                                // pass through the function.
+                                                List<String> commentData = [
+                                                  userData.firstName,
+                                                  userData.lastName,
+                                                  userData.profilePic,
+                                                  value,
+                                                  userData.uid,
+                                                  userData.date,
+                                                ];
+
+                                                crud.addCrewPostComment(snapshot.data.documents[postIndex].documentID, commentData);
+
+                                                commentController.clear();
+                                              },
+                                            ),
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+
+                                    // Used as padding
+                                    SizedBox(height: 10.0),
+
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-
-                          // Used as padding
-                          SizedBox(height: 15.0),
 
                         ],
                       ),
@@ -1057,8 +1085,8 @@ class _CrewListState extends State<CrewList> {
                       child: Text(
                         'Meet Your Crew',
                         style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 22
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
                         ),
                       ),
                     ),
@@ -1281,98 +1309,113 @@ class _LikeButtonState extends State<LikeButton> {
       });
     });
 
+    widget.crud.checkCrewPostLike(widget.docID, userData.uid).then((results) {
+      setState(() {
+        length = results.documents.length;
+
+        if (length > 0) {
+          liked = true;
+        }
+        else {
+          liked = false;
+        }
+      });
+    });
+
     return liked == true || length != null
-    ? Column(
-        children: <Widget> [
+        ? Column(
+      children: <Widget> [
 
-          GestureDetector(
-            onTap: () {
-              print('Clicked');
-              // Gets the current date and time to put on the post
-              var now = DateTime.now();
-              userData.date = DateFormat.yMMMMd('en_US').format(now);
-              userData.date = "${userData.date}" " ${DateFormat.jm().format(now)}";
+        GestureDetector(
+          onTap: () {
+            print('Clicked');
+            // Gets the current date and time to put on the post
+            var now = DateTime.now();
+            userData.date = DateFormat.yMMMMd('en_US').format(now);
+            userData.date = "${userData.date}" " ${DateFormat.jm().format(now)}";
 
-              // Puts all the user comment data to
-              // pass through the function.
-              List<String> likeData = [
-                userData.firstName,
-                userData.lastName,
-                userData.profilePic,
-                userData.uid,
-                userData.date,
-              ];
+            // Puts all the user comment data to
+            // pass through the function.
+            List<String> likeData = [
+              userData.firstName,
+              userData.lastName,
+              userData.profilePic,
+              userData.uid,
+              userData.date,
+            ];
 
-              if (liked == false) {
-                widget.crud.addCrewPostLike(widget.docID, likeData);
-                setState(() {
-                  liked = true;
+            if (liked == false) {
+              widget.crud.addCrewPostLike(widget.docID, likeData);
+              setState(() {
+                liked = true;
 
-                  widget.crud.checkCrewPostLike(widget.docID, userData.uid).then((
-                      results) {
-                    setState(() {
-                      length = results.documents.length;
-                    });
+                widget.crud.checkCrewPostLike(widget.docID, userData.uid).then((
+                    results) {
+                  setState(() {
+                    length = results.documents.length;
                   });
-
                 });
-              }
 
-              else {
-                widget.crud.deleteCrewLike(widget.docID, widget.likeID);
-                setState(() {
-                  liked = false;
+              });
+            }
 
-                  widget.crud.checkCrewPostLike(widget.docID, userData.uid).then((
-                      results) {
-                    setState(() {
-                      length = results.documents.length - 1;
-                    });
+            else {
+              widget.crud.deleteCrewLike(widget.docID, widget.likeID);
+              setState(() {
+                liked = false;
+
+                widget.crud.checkCrewPostLike(widget.docID, userData.uid).then((
+                    results) {
+                  setState(() {
+                    length = results.documents.length - 1;
                   });
-
                 });
-              }
 
-            },
-            child: Container(
-              height: 46.0,
-              width: 46.0,
+              });
+            }
+
+          },
+          child: Container(
+              height: 40.0,
+              width: 40.0,
               decoration: BoxDecoration(
                 color: liked == false
-                        ? const Color.fromRGBO(206, 38, 64, 1.0)
-                        : const Color.fromRGBO(250,205,85, 0.75),
-                borderRadius: BorderRadius.all(const Radius.circular(60.0)),
+                    ? const Color.fromRGBO(206, 38, 64, 1.0)
+                    : const Color.fromRGBO(250,205,85, 0.75),
+                borderRadius: BorderRadius.all(const Radius.circular(30.0)),
                 border: Border.all(
                   width: 2.0,
                   color: Color.fromRGBO(193, 34, 59, 1.0),
                 ),
               ),
               child: Container(
-                margin: const EdgeInsets.all(9),
-                child: Image.asset(
-                  'assets/icons/popcorn.png',
-                  color: Colors.white,
-                )
+                  margin: const EdgeInsets.all(6),
+                  child: Image.asset(
+                    'assets/icons/popcorn.png',
+                    color: Colors.white,
+                  )
               )
-            ),
           ),
+        ),
 
-          Container(
-            width: 100.0,
-            height: 20.0,
-            child: Center(
-              child: Text(
-                '${likes}',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
+        SizedBox(height: 5.0),
+
+        Container(
+          width: 100.0,
+          height: 20.0,
+          child: Center(
+            child: Text(
+              '${likes}',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
               ),
             ),
           ),
+        ),
       ],
     )
-    : Container(height: 0.0, width: 0.0);
+        : Container(height: 0.0, width: 0.0);
 
   }
 }
